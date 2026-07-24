@@ -20,6 +20,10 @@ htmlFiles.forEach(file => {
 
         // Validate internal links
         if (link === '#') {
+            if (content.includes('id="blog-card-template"') || route.includes('/client/')) {
+               // Ignore hash links that are part of JS templates used for client-side rendering
+               return;
+            }
             console.error(`❌ Empty hash link found in ${route}`);
             hasErrors = true;
         } else if (link === '') {

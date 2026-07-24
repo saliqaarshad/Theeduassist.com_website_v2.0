@@ -23,7 +23,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci --legacy-peer-deps
 
-- name: Validate Environment Safety
+      - name: Validate Environment Safety
         run: npm run validate:env
 
       - name: Validate Enterprise Architecture
@@ -94,6 +94,12 @@ jobs:
 
       - name: Build Project
         run: npm run build
+
+      - name: Validate IndexNow
+        run: npm run validate:indexnow
+
+      - name: Validate Webmaster Platforms
+        run: npm run validate:webmaster-platforms
 
       - name: Validate Canonicals
         run: npm run validate:canonicals

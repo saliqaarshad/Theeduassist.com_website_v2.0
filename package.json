@@ -43,7 +43,10 @@
     "validate:robots": "node scripts/validate-robots.mjs",
     "validate:canonicals": "node scripts/validate-canonicals.mjs",
     "validate:http": "node scripts/validate-http-statuses.mjs",
-    "validate:crawl": "node scripts/validate-crawl-readiness.mjs"
+    "validate:crawl": "node scripts/validate-crawl-readiness.mjs",
+    "indexnow:submit": "node scripts/submit-indexnow.mjs",
+    "validate:indexnow": "node scripts/validate-indexnow.mjs",
+    "validate:webmaster-platforms": "node scripts/validate-webmaster-platforms.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",

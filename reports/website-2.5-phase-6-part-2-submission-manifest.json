@@ -1,0 +1,19 @@
+{
+  "host": "www.theeduassist.com",
+  "sitemap": "https://www.theeduassist.com/sitemap.xml",
+  "representativeUrls": [
+    "https://www.theeduassist.com/",
+    "https://www.theeduassist.com/services/",
+    "https://www.theeduassist.com/enterprise-solutions/",
+    "https://www.theeduassist.com/blog/"
+  ],
+  "indexNowChanges": {
+    "added": [
+        "https://www.theeduassist.com/",
+        "https://www.theeduassist.com/services/"
+    ],
+    "updated": [],
+    "deleted": []
+  },
+  "excludedReasons": {}
+}
