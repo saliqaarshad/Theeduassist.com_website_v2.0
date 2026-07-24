@@ -1,0 +1,29 @@
+---
+const verificationValues = {
+  google: import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION,
+  bing: import.meta.env.PUBLIC_BING_SITE_VERIFICATION,
+  yandex: import.meta.env.PUBLIC_YANDEX_SITE_VERIFICATION,
+  naver: import.meta.env.PUBLIC_NAVER_SITE_VERIFICATION,
+  baidu: import.meta.env.PUBLIC_BAIDU_SITE_VERIFICATION,
+} as const;
+
+// Allow for legacy fallback if PUBLIC_GOOGLE_SITE_VERIFICATION isn't present
+// The instruction said "Google Domain-property DNS verification must not create an unnecessary Google meta tag"
+// However, earlier we had a fallback. If the env is entirely missing, we shouldn't emit anything.
+// But to ensure we don't break existing indexing, we will add the fallback *only* if defined, or explicitly.
+// But wait, the instruction specifically says "use explicit static references" and "do not render placeholders".
+// So we just iterate what is defined.
+
+const tags = [
+  { name: 'google-site-verification', content: verificationValues.google },
+  { name: 'msvalidate.01', content: verificationValues.bing },
+  { name: 'yandex-verification', content: verificationValues.yandex },
+  { name: 'naver-site-verification', content: verificationValues.naver },
+  { name: 'baidu-site-verification', content: verificationValues.baidu }
+].filter(tag => tag.content && typeof tag.content === 'string' && tag.content.trim() !== '');
+
+---
+
+{tags.map(tag => (
+  <meta name={tag.name} content={tag.content.trim()} />
+))}
