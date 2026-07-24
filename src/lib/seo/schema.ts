@@ -1,22 +1,20 @@
 import { site, buildCanonicalUrl } from '../seo';
+import { organizationEntity } from '../../data/organizationEntity';
 
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": site.name,
-    "url": site.url,
-    "logo": `${site.url}/brand/theeduassist-logo-official.svg`,
-    "image": `${site.url}/og/theeduassist-og-image.png`,
-    "email": "Info@theeduassist.com",
-    "sameAs": [
-      "https://www.facebook.com/people/Theeduassist/61576126813447/",
-      "https://www.instagram.com/theeduassist",
-      "https://www.linkedin.com/company/theeduassist"
-    ],
+    "name": organizationEntity.name,
+    "description": organizationEntity.description,
+    "url": organizationEntity.url,
+    "logo": organizationEntity.logo,
+    "image": `${organizationEntity.url}/og/theeduassist-og-image.png`,
+    "email": organizationEntity.contactPoint.email,
+    "sameAs": organizationEntity.socialProfiles,
     "contactPoint": {
       "@type": "ContactPoint",
-      "email": "Info@theeduassist.com",
+      "email": organizationEntity.contactPoint.email,
       "contactType": "customer service"
     }
   };
@@ -26,9 +24,9 @@ export function websiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": site.name,
-    "url": site.url,
-    "description": site.description
+    "name": organizationEntity.name,
+    "url": organizationEntity.url,
+    "description": organizationEntity.description
   };
 }
 
@@ -36,11 +34,11 @@ export function professionalServiceSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": site.name,
-    "url": site.url,
-    "description": site.description,
-    "image": `${site.url}/favicon-512x512.png`,
-    "email": "Info@theeduassist.com"
+    "name": organizationEntity.name,
+    "url": organizationEntity.url,
+    "description": organizationEntity.description,
+    "image": `${organizationEntity.url}/favicon-512x512.png`,
+    "email": organizationEntity.contactPoint.email
   };
 }
 
@@ -52,7 +50,7 @@ export function serviceSchema(name: string, description: string, urlPath: string
     "description": description,
     "provider": {
       "@type": "Organization",
-      "name": site.name
+      "name": organizationEntity.name
     },
     "url": buildCanonicalUrl(urlPath)
   };

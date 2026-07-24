@@ -17,7 +17,9 @@ function validateRobots() {
     process.exit(1);
   }
 
-  if (content.includes('Disallow: / ') || content.match(/^Disallow:\s*\/\s*$/m)) {
+  // Only check for accidental global disallow for all user agents, not specific bots like GPTBot.
+  const globalDisallowMatch = content.match(/User-agent:\s*\*\s*\n(?:Allow:[^\n]+\n)*Disallow:\s*\/\s*$/m);
+  if (globalDisallowMatch) {
     console.error('❌ Accidental global disallow in robots.txt.');
     process.exit(1);
   }

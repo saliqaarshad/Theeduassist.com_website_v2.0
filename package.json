@@ -46,7 +46,11 @@
     "validate:crawl": "node scripts/validate-crawl-readiness.mjs",
     "indexnow:submit": "node scripts/submit-indexnow.mjs",
     "validate:indexnow": "node scripts/validate-indexnow.mjs",
-    "validate:webmaster-platforms": "node scripts/validate-webmaster-platforms.mjs"
+    "validate:webmaster-platforms": "node scripts/validate-webmaster-platforms.mjs",
+    "validate:entities": "node scripts/validate-entity-consistency.mjs",
+    "validate:answer-readiness": "node scripts/validate-answer-readiness.mjs",
+    "validate:ai-crawlers": "node scripts/validate-ai-crawlers.mjs",
+    "validate:phase6-part3": "node scripts/validate-phase6-part3.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",

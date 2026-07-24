@@ -3,9 +3,10 @@ import { getSiteSettings, getNavigation } from '../../sanity/queries';
 import MobileMenu from './MobileMenu.astro';
 import { aiAssistants } from '../../data/aiAssistants';
 import { siteNavigation } from '../../data/siteNavigation';
+import { organizationEntity } from '../../data/organizationEntity';
 
 const siteSettings = await getSiteSettings();
-const site = siteSettings || { name: 'TheEduAssist', email: 'Info@theeduassist.com', social: {} };
+const site = siteSettings || { name: organizationEntity.name, email: organizationEntity.contactPoint.email, social: {} };
 
 const navigation = await getNavigation();
 
