@@ -57,7 +57,8 @@
     "validate:phase6": "node scripts/validate-phase6-complete.mjs",
     "validate:legacy-redirects": "node scripts/validate-legacy-redirects.mjs",
     "validate:brand-assets": "node scripts/validate-brand-assets.mjs",
-    "validate:footer-ux": "node scripts/validate-footer-ux.mjs"
+    "validate:footer-ux": "node scripts/validate-footer-ux.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
@@ -107,6 +108,7 @@
     "playwright": "^1.62.0",
     "prettier": "^3.5",
     "tailwindcss": "4.0.9",
-    "vite": "^5.4.21"
+    "vite": "^5.4.21",
+    "vitest": "^4.1.10"
   }
 }
