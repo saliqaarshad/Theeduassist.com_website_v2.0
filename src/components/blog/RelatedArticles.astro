@@ -19,6 +19,10 @@ const topicClusters: Record<string, string[]> = {
   'Course Creation': ['course creation', 'curriculum design', 'content conversion', 'online course', 'learning design', 'course outline', 'lesson structure'],
   'AI E-learning': ['ai elearning', 'ai course creation', 'ai learning support', 'training automation', 'ai content conversion']
 };
+const topicClustersEntries = Object.entries(topicClusters);
+const activeClusters = topicClustersEntries.filter(([_, clusterTags]) =>
+  currentTags.some(t => clusterTags.includes(t.toLowerCase()))
+);
 
 // Ensure allPosts is strictly public already, but filter by current slug
 const related = allPosts
@@ -44,11 +48,10 @@ const related = allPosts
     }
 
     // Cluster matching
-    if (p.tags && p.tags.length > 0) {
-      for (const [clusterName, clusterTags] of Object.entries(topicClusters)) {
-        const hasCurrentCluster = currentTags.some(t => clusterTags.includes(t.toLowerCase()));
+    if (p.tags && p.tags.length > 0 && activeClusters.length > 0) {
+      for (const [clusterName, clusterTags] of activeClusters) {
         const hasPostCluster = p.tags.some((t: string) => clusterTags.includes(t.toLowerCase()));
-        if (hasCurrentCluster && hasPostCluster) {
+        if (hasPostCluster) {
            score += 1.5;
            break;
         }
