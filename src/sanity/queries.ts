@@ -1,8 +1,14 @@
 import { fetchFromSanity } from './client'
 
+// In-memory cache for build-time optimization (cache the Promise to prevent concurrent duplication)
+let siteSettingsCache: Promise<any> | null = null;
+let navigationCache: Promise<any> | null = null;
+
 // Site settings
 export async function getSiteSettings() {
-  return await fetchFromSanity(`*[_type == "siteSettings"][0]`)
+  if (siteSettingsCache) return siteSettingsCache;
+  siteSettingsCache = fetchFromSanity(`*[_type == "siteSettings"][0]`);
+  return siteSettingsCache;
 }
 
 // All pages
@@ -172,7 +178,9 @@ export async function getCaseStudyBySlug(slug: string) {
 
 // Navigation
 export async function getNavigation() {
-  return await fetchFromSanity(`*[_type == "navigation"][0]`)
+  if (navigationCache) return navigationCache;
+  navigationCache = fetchFromSanity(`*[_type == "navigation"][0]`);
+  return navigationCache;
 }
 
 // CTA blocks
