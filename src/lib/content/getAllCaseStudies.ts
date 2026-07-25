@@ -52,7 +52,6 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
        return unique;
     }
   } catch (error) {
-    console.log("Sanity case studies fetch failed or dataset not found, falling back to static.");
   }
 
   return staticStudies;
