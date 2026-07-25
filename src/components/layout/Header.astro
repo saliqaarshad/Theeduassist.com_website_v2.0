@@ -3,6 +3,7 @@ import { getSiteSettings, getNavigation } from '../../sanity/queries';
 import MobileMenu from './MobileMenu.astro';
 import { aiAssistants } from '../../data/aiAssistants';
 import { siteNavigation } from '../../data/siteNavigation';
+import BrandLogo from '../ui/BrandLogo.astro';
 import { organizationEntity } from '../../data/organizationEntity';
 
 const siteSettings = await getSiteSettings();
@@ -15,7 +16,7 @@ const navigation = await getNavigation();
     <div class="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <a href="/" class="flex items-center space-x-3 focus-ring rounded-sm group shrink-0 min-w-0" aria-label="TheEduAssist Home">
             <div class="h-11 w-11 md:h-12 md:w-12 rounded-full overflow-hidden shrink-0 min-w-0 flex items-center justify-center">
-                <img src="/brand/theeduassist-logo-official.svg" alt="TheEduAssist e-learning design agency logo" class="h-full w-full object-contain" height="48" width="48" />
+                <BrandLogo size="w-full h-full object-contain" decorative={false} priority="eager" />
             </div>
             <div class="hidden md:flex flex-col">
                 <span class="font-bold text-brand-primary text-xl leading-tight group-hover:text-brand-accent transition-colors duration-300">TheEduAssist</span>
@@ -83,7 +84,7 @@ const navigation = await getNavigation();
             ))}
 
             <div class="flex items-center ml-2 xl:ml-4 pl-4 xl:pl-6 border-l border-brand-border/60">
-                <a href="/book-free-audit/" class="bg-brand-accent text-white px-5 py-2.5 rounded-md font-semibold hover-lift click-press focus-ring transition-all duration-300 hover:bg-brand-primary shadow hover:shadow-md whitespace-nowrap">Get 24–48 Hour Review</a>
+                <a href="/book-free-audit/" class="bg-brand-accent text-white px-5 py-2.5 rounded-md font-semibold hover-lift click-press focus-ring transition-all duration-300 hover:bg-brand-primary shadow hover:shadow-md whitespace-nowrap">Get a 24–48 Hour Review</a>
             </div>
         </nav>
         <div class="xl:hidden flex items-center">

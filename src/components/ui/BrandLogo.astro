@@ -1,0 +1,58 @@
+---
+export interface Props {
+    size?: string;
+    class?: string;
+    linked?: boolean;
+    priority?: "eager" | "lazy";
+
+    showName?: boolean;
+
+    decorative?: boolean;
+}
+
+const {
+    size = "w-full h-full",
+    class: className = "",
+    linked = false,
+    priority = "lazy",
+
+    showName = false,
+
+    decorative = false
+} = Astro.props;
+
+const ariaHidden = decorative ? "true" : undefined;
+const altText = decorative ? "" : "TheEduAssist official logo";
+
+
+---
+<Fragment>{linked ? (
+    <a href="/" aria-label={!showName ? "TheEduAssist Home" : undefined} class={`inline-block focus-ring ${className}`}>
+
+<img
+    src="/brand/theeduassist-logo-official.svg"
+    alt={altText}
+    aria-hidden={ariaHidden}
+    loading={priority}
+    decoding={priority === "eager" ? "sync" : "async"}
+    class={`object-contain ${size} ${className}`}
+    width="48"
+    height="48"
+/>
+
+        {showName && <span>TheEduAssist</span>}
+    </a>
+) : (
+
+<img
+    src="/brand/theeduassist-logo-official.svg"
+    alt={altText}
+    aria-hidden={ariaHidden}
+    loading={priority}
+    decoding={priority === "eager" ? "sync" : "async"}
+    class={`object-contain ${size} ${className}`}
+    width="48"
+    height="48"
+/>
+
+)}</Fragment>

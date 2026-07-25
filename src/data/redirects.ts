@@ -23,6 +23,35 @@ export type RedirectRule = {
 };
 
 export const redirects: RedirectRule[] = [
+
+  {
+    from: "/case-studies-1/",
+    to: "/case-studies/",
+    status: "ready",
+    statusCode: 301,
+    reason: "Old WordPress case studies page moved to Astro case studies page.",
+    sourceGroup: "oldPage",
+    targetExists: true
+  },
+  {
+    from: "/kajabi-virtual-assistant-services/",
+    to: "/kajabi-services/",
+    status: "ready",
+    statusCode: 301,
+    reason: "Kajabi subpage mapped",
+    sourceGroup: "oldKajabi",
+    targetExists: true
+  },
+  {
+    from: "/ebook-services/",
+    to: "/services/content-conversion/",
+    status: "ready",
+    statusCode: 301,
+    reason: "Mapped to content conversion",
+    sourceGroup: "oldService",
+    targetExists: true
+  },
+
   {
     from: "/contact-us/",
     to: "/contact/",
@@ -41,15 +70,7 @@ export const redirects: RedirectRule[] = [
     sourceGroup: "oldPage",
     targetExists: true
   },
-  {
-    from: "/case-studies-1/",
-    to: "/case-studies/",
-    status: "ready",
-    statusCode: 301,
-    reason: "Old WordPress case studies page moved to Astro case studies page.",
-    sourceGroup: "oldPage",
-    targetExists: true
-  },
+
   {
     from: "/case-studies-2/",
     to: "/case-studies/",
@@ -158,15 +179,7 @@ export const redirects: RedirectRule[] = [
     sourceGroup: "oldKajabi",
     targetExists: true
   },
-  {
-    from: "/kajabi-virtual-assistant-services/",
-    to: "/kajabi-services/",
-    status: "pending",
-    statusCode: 301,
-    reason: "Kajabi subpage mapped",
-    sourceGroup: "oldKajabi",
-    targetExists: true
-  },
+
 
   // WordPress JUNK
   { from: "/?wpr_templates=user-single-online-course-v1-post", to: "", status: "doNotRedirect", statusCode: 301, reason: "WP Template", sourceGroup: "oldTemplate", targetExists: false },
