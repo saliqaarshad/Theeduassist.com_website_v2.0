@@ -109,11 +109,3 @@ export function collectionPageSchema(name: string, description: string, urlPath:
     "url": buildCanonicalUrl(urlPath)
   };
 }
-
-export function blogPostingSchema() {
-  // Placeholder for later only
-  return {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting"
-  };
-}
