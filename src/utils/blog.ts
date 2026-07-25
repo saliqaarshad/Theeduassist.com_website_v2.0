@@ -17,14 +17,18 @@ export function getBlogUrl(post: any): string | null {
 export function getFallbackDescription(content?: string, body?: any[]): string {
   if (content && typeof content === 'string') {
     const text = content.replace(/<[^>]+>/g, '').trim();
-    if (text) return text.substring(0, 150) + '...';
+    if (text) {
+      return text.length > 150 ? text.substring(0, 150) + '...' : text;
+    }
   }
 
   if (body && Array.isArray(body)) {
     const firstText = body.find(b => b._type === 'block' && b.style === 'normal' && b.children && b.children.length > 0);
     if (firstText) {
       const text = firstText.children.map((c: any) => c.text).join('').trim();
-      if (text) return text.substring(0, 150) + '...';
+      if (text) {
+        return text.length > 150 ? text.substring(0, 150) + '...' : text;
+      }
     }
   }
 
