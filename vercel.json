@@ -116,5 +116,22 @@
       "destination": "/404",
       "permanent": false
     }
+  ],
+  "routes": [
+    {
+      "src": "/tag/thinkific-marketing(?:/.*)?",
+      "status": 410
+    },
+    {
+      "src": "/tag/theeduassist-com-course-creation(?:/.*)?",
+      "status": 410
+    },
+    {
+      "src": "/jobs/lead-generation-internfresh-grads-unpaid(?:/.*)?",
+      "status": 410
+    },
+    {
+      "handle": "filesystem"
+    }
   ]
 }

@@ -83,6 +83,15 @@ jobs:
       - name: Validate Redirects
         run: npm run validate:redirects
 
+      - name: Validate Legacy Redirects
+        run: npm run validate:legacy-redirects
+
+      - name: Validate Brand Assets
+        run: npm run validate:brand-assets
+
+      - name: Validate Footer UX
+        run: npm run validate:footer-ux
+
       - name: Check Sanity Blog Public
         run: npm run check:sanity:blog
 
