@@ -106,3 +106,15 @@ jobs:
 
       - name: Validate Sitemap
         run: npm run validate:sitemap
+
+      - name: Validate Referrals
+        run: npm run validate:referrals
+
+      - name: Validate Monitoring
+        run: npm run validate:monitoring
+
+      - name: Validate Analytics Governance
+        run: npm run validate:analytics-governance
+
+      - name: Validate Phase 6
+        run: npm run validate:phase6

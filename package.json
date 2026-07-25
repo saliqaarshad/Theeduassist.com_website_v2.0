@@ -50,7 +50,11 @@
     "validate:entities": "node scripts/validate-entity-consistency.mjs",
     "validate:answer-readiness": "node scripts/validate-answer-readiness.mjs",
     "validate:ai-crawlers": "node scripts/validate-ai-crawlers.mjs",
-    "validate:phase6-part3": "node scripts/validate-phase6-part3.mjs"
+    "validate:phase6-part3": "node scripts/validate-phase6-part3.mjs",
+    "validate:referrals": "node scripts/validate-referral-classification.mjs",
+    "validate:monitoring": "node scripts/validate-monitoring-architecture.mjs",
+    "validate:analytics-governance": "node scripts/validate-analytics-governance.mjs",
+    "validate:phase6": "node scripts/validate-phase6-complete.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
