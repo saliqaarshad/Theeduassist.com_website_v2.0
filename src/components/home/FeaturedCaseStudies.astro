@@ -15,11 +15,29 @@ try {
   console.warn("Could not fetch case studies from Sanity on Homepage");
 }
 
+const sanityStudyMap = new Map();
+if (Array.isArray(sanityCaseStudies)) {
+  for (const study of sanityCaseStudies) {
+    if (study && study.slug?.current) {
+      sanityStudyMap.set(study.slug.current, study);
+    }
+  }
+}
+
+const fallbackStudyMap = new Map();
+if (Array.isArray(fallbackCaseStudies)) {
+  for (const study of fallbackCaseStudies) {
+    if (study && study.slug) {
+      fallbackStudyMap.set(study.slug, study);
+    }
+  }
+}
+
 // Ensure the exact three case studies are displayed.
 // Merge with Sanity if available, otherwise use static fallback.
 const featuredCaseStudies = targetSlugs.map(slug => {
-  const sanityStudy = sanityCaseStudies.find(study => study.slug?.current === slug);
-  const fallbackStudy = fallbackCaseStudies.find(study => study.slug === slug);
+  const sanityStudy = sanityStudyMap.get(slug);
+  const fallbackStudy = fallbackStudyMap.get(slug);
 
   if (sanityStudy && sanityStudy.title) {
     return {
