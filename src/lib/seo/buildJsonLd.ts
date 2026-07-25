@@ -6,8 +6,7 @@ import {
     faqPageSchema,
     breadcrumbSchema,
     webPageSchema,
-    collectionPageSchema,
-    blogPostingSchema
+    collectionPageSchema
 } from './schema';
 
 export function buildGlobalSchemas() {
