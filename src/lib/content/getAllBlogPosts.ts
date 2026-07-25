@@ -299,7 +299,7 @@ export async function getFullBlogPostsForAuditOnly(): Promise<NormalizedBlogPost
        return unique;
     }
   } catch (error) {
-    console.log("Sanity posts fetch failed or dataset not found.");
+    // Sanity posts fetch failed or dataset not found
   }
 
   return [];
