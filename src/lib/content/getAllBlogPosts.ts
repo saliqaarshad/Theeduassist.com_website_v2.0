@@ -235,7 +235,6 @@ export async function getBlogPostSummaries(): Promise<NormalizedBlogPost[]> {
        return unique;
     }
   } catch (error) {
-    console.log("Sanity summaries fetch failed.", error);
   }
   return [];
 }
