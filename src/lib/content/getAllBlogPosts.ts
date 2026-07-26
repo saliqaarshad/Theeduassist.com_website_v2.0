@@ -235,7 +235,6 @@ export async function getBlogPostSummaries(): Promise<NormalizedBlogPost[]> {
        return unique;
     }
   } catch (error) {
-    console.log("Sanity summaries fetch failed.", error);
   }
   return [];
 }
@@ -299,7 +298,7 @@ export async function getFullBlogPostsForAuditOnly(): Promise<NormalizedBlogPost
        return unique;
     }
   } catch (error) {
-    console.log("Sanity posts fetch failed or dataset not found.");
+    // Sanity posts fetch failed or dataset not found
   }
 
   return [];

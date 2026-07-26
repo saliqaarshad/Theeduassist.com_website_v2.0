@@ -20,9 +20,6 @@ export const sanityCdnClient = createClient({
   useCdn: true,
 });
 
-// Deprecated in favor of sanityBuildClient / sanityCdnClient. Kept for backwards compatibility if needed during refactoring
-export const sanityClient = sanityBuildClient;
-
 export async function fetchFromSanity(
   query: string,
   params: Record<string, any> = {},
