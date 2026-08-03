@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const distDir = path.join(__dirname, '../dist/client');
+const distDir = path.join(__dirname, '../dist');
 
 async function validateAnswerReadiness() {
     console.log("Validating Answer Readiness...");
