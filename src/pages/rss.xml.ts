@@ -1,11 +1,8 @@
 import rss from '@astrojs/rss';
-import { fetchFromSanity } from '../sanity/client';
-import { rssPostsQuery } from '../lib/blog/queries';
-import { normalizeBlogPost } from '../lib/blog/normalizeBlogPost';
+import { getBlogPostSummaries } from '../lib/content/getAllBlogPosts';
 
 export async function GET(context: any) {
-  const postsRaw = await fetchFromSanity(rssPostsQuery);
-  const posts = Array.isArray(postsRaw) ? postsRaw.map(normalizeBlogPost) : [];
+  const posts = await getBlogPostSummaries();
 
   return rss({
     title: 'TheEduAssist Blog',
@@ -13,9 +10,9 @@ export async function GET(context: any) {
     site: context.site || 'https://www.theeduassist.com',
     items: posts.map((post) => ({
       title: post.title,
-      pubDate: new Date(post.datePublished),
+      pubDate: post.publishedAt ? new Date(post.publishedAt) : new Date(),
       description: post.excerpt,
-      link: post.canonical,
+      link: post.canonicalUrl || `/blog/${post.slug}/`,
     })),
     customData: `<language>en-us</language>`,
   });

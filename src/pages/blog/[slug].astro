@@ -8,26 +8,25 @@ import BlogCTA from '../../components/blog/BlogCTA.astro';
 import ArticleShareButtons from '../../components/blog/ArticleShareButtons.astro';
 import BlogFAQs from '../../components/blog/BlogFAQs.astro';
 
-import { fetchFromSanity } from '../../sanity/client';
-import { blogPostSlugsQuery, blogPostDetailQuery } from '../../lib/blog/queries';
-import { normalizeBlogPost } from '../../lib/blog/normalizeBlogPost';
+import { getFullBlogPostsForAuditOnly, getBlogPostSlugs } from '../../lib/content/getAllBlogPosts';
 import { extractHeadings } from '../../utils/extractHeadings';
 
 export async function getStaticPaths() {
-  const postsRaw = await fetchFromSanity(blogPostSlugsQuery);
-  return postsRaw.filter((p: any) => p.slug).map((p: any) => ({
-    params: { slug: p.slug },
-    props: { slug: p.slug }
+  const slugs = await getBlogPostSlugs();
+  return slugs.map(slug => ({
+    params: { slug },
+    props: { slug }
   }));
 }
 
 const { slug } = Astro.params;
 
-const rawPost = await fetchFromSanity(blogPostDetailQuery, { slug }, { useCdn: false, tags: ["website.blog.detail"] });
-if (!rawPost) {
+const allPosts = await getFullBlogPostsForAuditOnly();
+const post = allPosts.find(p => p.slug === slug);
+
+if (!post) {
   return new Response("Not found", { status: 404 });
 }
-const post = normalizeBlogPost(rawPost);
 
 if (post.slug !== slug) {
   throw new Error(`Route constraint failure: Fetched detail slug "${post.slug}" does not match generated route slug "${slug}"`);
@@ -58,7 +57,7 @@ const schemaData = {
     "name": "TheEduAssist",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://www.theeduassist.com/ui/theeduassist-logo-icon.png"
+      "url": "https://www.theeduassist.com/brand/theeduassist-logo-official.svg"
     }
   },
   "mainEntityOfPage": {
@@ -91,9 +90,9 @@ const schemaData = {
           <nav class="flex items-center text-sm font-medium text-slate-500 mb-6 space-x-2" aria-label="Breadcrumb">
             <a href="/blog/" class="hover:text-brand-green transition-colors">Blog</a>
             <span>/</span>
-            <a href={`/blog/category/${post.primaryCategory}/`} class="hover:text-brand-green transition-colors capitalize">{post.primaryCategory.replace('-', ' ')}</a>
+            <a href={`/blog/category/${post.category || 'general'}/`} class="hover:text-brand-green transition-colors capitalize">{(post.category || 'General').replace('-', ' ')}</a>
             <span>/</span>
-            <span class="text-brand-blue capitalize">{post.contentType.replace('-', ' ')}</span>
+            <span class="text-brand-blue capitalize">{post.contentType ? post.contentType.replace('-', ' ') : 'Article'}</span>
           </nav>
 
           <h1 class="text-3xl md:text-5xl font-bold text-brand-blue leading-tight mb-6">
@@ -175,8 +174,10 @@ const schemaData = {
           )}
 
           <div class="prose prose-slate prose-lg md:prose-xl prose-brand max-w-none prose-headings:scroll-mt-24 prose-a:text-brand-green hover:prose-a:text-brand-blue prose-img:rounded-xl">
-            {post.body && post.body.length > 0 ? (
-              <PortableTextRenderer value={post.body} />
+            {post.content ? (
+              <div set:html={post.content} />
+            ) : post.body && post.body.length > 0 ? (
+              <div>Content cannot be rendered without PortableText.</div>
             ) : (
               <p>Content is being updated.</p>
             )}

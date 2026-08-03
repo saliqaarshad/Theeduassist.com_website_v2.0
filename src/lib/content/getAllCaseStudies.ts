@@ -1,5 +1,4 @@
 import { caseStudies } from '../../data/caseStudies';
-import { getCaseStudyBySlug, getAllCaseStudies as getSanityCaseStudies } from '../../sanity/queries';
 
 export type CaseStudy = {
   title: string;
@@ -13,12 +12,12 @@ export type CaseStudy = {
   noIndex?: boolean;
   publishedAt?: string;
   updatedAt?: string;
-  source: 'sanity' | 'static';
+  source: 'static';
 };
 
 export async function getAllCaseStudies(): Promise<CaseStudy[]> {
   const staticStudies: CaseStudy[] = caseStudies
-    .filter(cs => !cs.noIndex)
+    .filter(cs => !(cs as any).noIndex)
     .map(cs => ({
       title: cs.title,
       slug: cs.slug,
@@ -28,31 +27,6 @@ export async function getAllCaseStudies(): Promise<CaseStudy[]> {
       summary: cs.summary,
       source: 'static'
     }));
-
-  try {
-    const sanityStudies = await getSanityCaseStudies();
-    if (sanityStudies && Array.isArray(sanityStudies)) {
-      // Merge or return sanity data
-      // For now, if we have valid Sanity data we could merge, but we'll just return static for simplicity if Sanity is empty
-       const formattedSanity = sanityStudies.map((cs: any) => ({
-          title: cs.title,
-          slug: cs.slug.current,
-          subtitle: cs.subtitle,
-          clientType: cs.clientType,
-          industry: cs.industry,
-          summary: cs.summary,
-          publishedAt: cs.publishedAt,
-          updatedAt: cs._updatedAt,
-          source: 'sanity'
-       }));
-
-       // Deduplicate by slug (prefer sanity over static)
-       const combined = [...formattedSanity, ...staticStudies];
-       const unique = combined.filter((v, i, a) => a.findIndex(t => (t.slug === v.slug)) === i);
-       return unique;
-    }
-  } catch (error) {
-  }
 
   return staticStudies;
 }

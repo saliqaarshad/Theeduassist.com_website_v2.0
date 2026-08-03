@@ -58,7 +58,7 @@ describe('blog utils', () => {
       expect(getFallbackDescription(html)).toBe(expected);
     });
 
-    it('extracts text from PortableText body', () => {
+    it('extracts text from  body', () => {
       const body = [
         {
           _type: 'block',
@@ -66,14 +66,14 @@ describe('blog utils', () => {
           children: [
             { text: 'This is ' },
             { text: 'a test ' },
-            { text: 'from PortableText.' }
+            { text: 'from .' }
           ]
         }
       ];
-      expect(getFallbackDescription(undefined, body)).toBe('This is a test from PortableText.');
+      expect(getFallbackDescription(undefined, body)).toBe('This is a test from .');
     });
 
-    it('ignores non-normal blocks in PortableText', () => {
+    it('ignores non-normal blocks in ', () => {
       const body = [
         {
           _type: 'image',

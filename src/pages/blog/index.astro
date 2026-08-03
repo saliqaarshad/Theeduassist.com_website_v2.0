@@ -1,15 +1,12 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { fetchFromSanity } from "../../sanity/client";
-import { blogPostSummariesQuery } from "../../lib/blog/queries";
-import { normalizeBlogPost } from "../../lib/blog/normalizeBlogPost";
+import { getBlogPostSummaries } from "../../lib/content/getAllBlogPosts";
 import { blogCategories } from "../../data/blogArchitecture";
 import BlogCard from "../../components/blog/BlogCard.astro";
 import BlogCTA from "../../components/blog/BlogCTA.astro";
 
 // Fetch posts
-const allPostsRaw = await fetchFromSanity(blogPostSummariesQuery, {}, { useCdn: false, tags: ["website.blog.summaries"] });
-const allPosts = Array.isArray(allPostsRaw) ? allPostsRaw.map(normalizeBlogPost) : [];
+const allPosts = await getBlogPostSummaries();
 
 // Find featured
 const featuredPost = allPosts.find(p => p.featured) || allPosts[0];

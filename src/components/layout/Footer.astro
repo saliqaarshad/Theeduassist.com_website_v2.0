@@ -1,12 +1,10 @@
 ---
-import { getSiteSettings } from '../../sanity/queries';
 import { footerNavigation } from '../../data/siteNavigation';
 import { trustPages } from '../../data/trustArchitecture';
 import { organizationEntity } from '../../data/organizationEntity';
 import BrandLogo from '../ui/BrandLogo.astro';
 
-const siteSettings = await getSiteSettings();
-const site = siteSettings || { name: organizationEntity.name, email: organizationEntity.contactPoint.email, social: {} };
+const site = { name: organizationEntity.name, email: organizationEntity.contactPoint.email, social: {} };
 ---
 <footer class="bg-brand-navy text-slate-300 py-16 border-t border-brand-border/20 relative overflow-hidden">
     <!-- Top Footer CTA -->
@@ -100,7 +98,7 @@ const site = siteSettings || { name: organizationEntity.name, email: organizatio
                 <li><a href="/contact/" class="text-slate-400 hover:text-brand-accent transition-colors focus-ring inline-block">Contact</a></li>
                 <li><a href="/privacy-policy/" class="text-slate-400 hover:text-brand-accent transition-colors focus-ring inline-block">Privacy</a></li>
                 <li><a href="/terms-and-conditions/" class="text-slate-400 hover:text-brand-accent transition-colors focus-ring inline-block">Terms</a></li>
-                <li><a href="/enterprise-solutions/project-brief/" class="text-slate-400 hover:text-brand-accent transition-colors focus-ring inline-block">Submit a Project Brief</a></li>
+                <li><a href="/book-free-audit/" class="text-slate-400 hover:text-brand-accent transition-colors focus-ring inline-block">Get a 24–48 Hour Review</a></li>
             </ul>
         </div>
     </div>

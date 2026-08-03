@@ -78,15 +78,15 @@ export const conversionJourneys: ConversionJourney[] = [
   {
     id: "enterprise-project-brief",
     title: "Enterprise Project Brief",
-    href: "/enterprise-solutions/project-brief/",
-    canonical: "/enterprise-solutions/project-brief/",
+    href: "/book-free-audit/",
+    canonical: "/book-free-audit/",
     status: "live",
     audience: "enterprise",
     publicVisibility: true,
     sitemapVisibility: true,
     formId: "enterprise-brief-form",
     endpoint: "/api/forms/enterprise-brief",
-    successRoute: "/enterprise-solutions/project-brief/?success=true",
+    successRoute: "/book-free-audit/?success=true",
     analyticsCategory: "enterprise_brief",
     primaryCtaLabel: "Submit an Enterprise Project Brief",
     shortDescription: "Submit details for enterprise eLearning projects."
@@ -94,14 +94,14 @@ export const conversionJourneys: ConversionJourney[] = [
   {
     id: "procurement-inquiry",
     title: "Procurement Inquiry",
-    href: "/enterprise-solutions/project-brief/",
-    canonical: "/enterprise-solutions/project-brief/",
+    href: "/book-free-audit/",
+    canonical: "/book-free-audit/",
     status: "live",
     audience: "procurement",
     publicVisibility: true,
     sitemapVisibility: false,
     analyticsCategory: "procurement",
-    primaryCtaLabel: "Submit Initial Project Requirements",
+    primaryCtaLabel: "Get a 24–48 Hour Review",
     shortDescription: "Procurement readiness and project discussion."
   }
 ];
