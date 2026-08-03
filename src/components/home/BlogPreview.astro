@@ -1,14 +1,12 @@
 ---
-import { fetchFromSanity } from '../../lib/sanity/client';
-import { latestBlogPostsQuery } from '../../sanity/queries';
+import { getBlogPostSummaries } from '../../lib/content/getAllBlogPosts';
 
 let recentPosts = [];
 try {
-  // Query 3 recent posts by appending [0...3] slice to the base GROQ query
-  const query = `${latestBlogPostsQuery.trim()}[0...3]`;
-  recentPosts = await fetchFromSanity(query, {}, { useCdn: true, tags: ["website.blog.list"] });
+  const allPosts = await getBlogPostSummaries();
+  recentPosts = allPosts.slice(0, 3);
 } catch (e) {
-  console.warn("Could not fetch recent posts from Sanity on Homepage");
+  console.warn("Could not fetch recent posts for Homepage");
 }
 
 const fallbackTopics = [
@@ -40,7 +38,7 @@ const displayItems = hasPosts ? recentPosts : fallbackTopics;
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
       {displayItems.map(item => (
-        <a href={item.topic ? `/blog/` : `/blog/${item.slug.current || item.slug}/`} class="group bg-slate-50 rounded-2xl border border-brand-border hover:border-brand-accent/50 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden focus-ring h-full">
+        <a href={item.topic ? `/blog/` : `/blog/${item.slug || item.slug}/`} class="group bg-slate-50 rounded-2xl border border-brand-border hover:border-brand-accent/50 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden focus-ring h-full">
           {/* Visual Treatment */}
           <div class="h-48 bg-slate-200 border-b border-brand-border/50 relative overflow-hidden">
             {item.topic ? (

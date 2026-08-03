@@ -1,5 +1,4 @@
 ---
-import { getAllCaseStudies } from '../../sanity/queries';
 import { caseStudies as fallbackCaseStudies } from '../../data/caseStudies';
 
 const targetSlugs = [
@@ -19,7 +18,7 @@ const sanityStudyMap = new Map();
 if (Array.isArray(sanityCaseStudies)) {
   for (const study of sanityCaseStudies) {
     if (study && study.slug?.current) {
-      sanityStudyMap.set(study.slug.current, study);
+      sanityStudyMap.set(study.slug, study);
     }
   }
 }
@@ -42,7 +41,7 @@ const featuredCaseStudies = targetSlugs.map(slug => {
   if (sanityStudy && sanityStudy.title) {
     return {
       title: sanityStudy.title,
-      slug: sanityStudy.slug.current,
+      slug: sanityStudy.slug,
       summary: sanityStudy.summary || fallbackStudy?.summary,
       industry: sanityStudy.industry || fallbackStudy?.industry,
       imageUrl: sanityStudy.mainImage?.asset?.url || null

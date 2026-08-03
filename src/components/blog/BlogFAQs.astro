@@ -1,9 +1,7 @@
 ---
-import PortableTextRenderer from './PortableTextRenderer';
-
 export interface FAQItem {
   question: string;
-  answer: any;
+  answer: string | any; // String in Markdown or  obj
   showOnPage?: boolean;
   showOnSite?: boolean;
   orderRank?: string | number;
@@ -82,8 +80,8 @@ if (allFaqs.length === 0) {
             {typeof faq.answer === 'string' ? (
               <p>{faq.answer}</p>
             ) : (
-              <div class="faq-portable-text">
-                <PortableTextRenderer value={faq.answer} />
+              <div class="px-6 pb-6 pt-2 text-slate-600 prose prose-sm max-w-none">
+                {typeof faq.answer === 'string' ? <Fragment set:html={faq.answer} /> : <div>FAQ text unable to render properly without </div>}
               </div>
             )}
           </div>

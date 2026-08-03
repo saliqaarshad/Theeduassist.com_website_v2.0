@@ -1,15 +1,11 @@
 ---
-import { getSiteSettings, getNavigation } from '../../sanity/queries';
 import MobileMenu from './MobileMenu.astro';
 import { aiAssistants } from '../../data/aiAssistants';
 import { siteNavigation } from '../../data/siteNavigation';
 import BrandLogo from '../ui/BrandLogo.astro';
 import { organizationEntity } from '../../data/organizationEntity';
 
-const siteSettings = await getSiteSettings();
-const site = siteSettings || { name: organizationEntity.name, email: organizationEntity.contactPoint.email, social: {} };
-
-const navigation = await getNavigation();
+const site = { name: organizationEntity.name, email: organizationEntity.contactPoint.email, social: {} };
 
 ---
 <header class="bg-white/90 backdrop-blur-md border-b border-brand-border/50 relative z-50 sticky top-0 shadow-sm transition-all duration-300">
@@ -83,8 +79,9 @@ const navigation = await getNavigation();
                 ) : null
             ))}
 
-            <div class="flex items-center ml-2 xl:ml-4 pl-4 xl:pl-6 border-l border-brand-border/60">
+            <div class="flex items-center ml-2 xl:ml-4 pl-4 xl:pl-6 border-l border-brand-border/60 gap-3">
                 <a href="/book-free-audit/" class="bg-brand-accent text-white px-5 py-2.5 rounded-md font-semibold hover-lift click-press focus-ring transition-all duration-300 hover:bg-brand-primary shadow hover:shadow-md whitespace-nowrap">Get a 24–48 Hour Review</a>
+                <a href="https://calendly.com/eduassist-talk/30min" target="_blank" rel="noopener noreferrer" class="hidden 2xl:inline-flex bg-transparent border-2 border-brand-primary text-brand-primary px-5 py-2.5 rounded-md font-semibold hover-lift click-press focus-ring transition-all duration-300 hover:bg-brand-softBg whitespace-nowrap">Book a Call / Demo</a>
             </div>
         </nav>
         <div class="xl:hidden flex items-center">

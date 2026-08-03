@@ -88,7 +88,7 @@ describe('blog utils', () => {
           ]
         }
       ];
-      expect(getFallbackDescription(undefined, body)).toBe('This is extracted from the body array....');
+      expect(getFallbackDescription(undefined, body)).toBe('This is extracted from the body array.');
     });
 
     it('truncates extracted body text if too long', () => {

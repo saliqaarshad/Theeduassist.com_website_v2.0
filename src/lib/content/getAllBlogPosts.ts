@@ -1,7 +1,3 @@
-import { latestBlogPostsQuery, blogPostSlugsQuery, blogPostSummariesQuery } from '../../sanity/queries';
-import { fetchFromSanity } from '../../sanity/client';
-
-
 export function getPlainTextFromPortableText(body: any[]): string {
   if (!body || !Array.isArray(body)) return '';
 
@@ -87,7 +83,7 @@ export function getBlogPostPublicFilterReason(post: any): string | null {
       return 'test title';
   }
 
-  if (post.slug && post.slug.current && post.slug.current.includes('__trashed')) return 'trashed slug';
+  if (post.slug && post.slug && post.slug.includes('__trashed')) return 'trashed slug';
   if (post.slug && typeof post.slug === 'string' && post.slug.includes('__trashed')) return 'trashed slug';
 
   if (post.hidden === true) return 'hidden true';
@@ -181,10 +177,12 @@ export type NormalizedBlogPost = {
 
 export async function getBlogPostSlugs(): Promise<string[]> {
   try {
-    const slugs = await fetchFromSanity(blogPostSlugsQuery, {}, { useCdn: true, tags: ['website.blog.slugs'] });
-    if (slugs && Array.isArray(slugs)) {
-      return slugs.map((s: any) => s.slug).filter(Boolean).map(s => s.replace(/^https?:\/\/[^\/]+\/blog\//, '').replace(/\/$/, ''));
-    }
+    const localPosts = import.meta.glob('/src/content/blog/*.md', { eager: true });
+    return Object.keys(localPosts).map(filepath => {
+      const match = filepath.match(/\/([^\/]+)\.md$/);
+      if (match) return match[1];
+      return null;
+    }).filter(Boolean) as string[];
   } catch (e) {
     console.error("Failed to fetch blog slugs", e);
   }
@@ -192,115 +190,51 @@ export async function getBlogPostSlugs(): Promise<string[]> {
 }
 
 export async function getBlogPostSummaries(): Promise<NormalizedBlogPost[]> {
-  try {
-    const sanityPosts = await fetchFromSanity(blogPostSummariesQuery, {}, { useCdn: true, tags: ['website.blog.summaries'] });
-    if (sanityPosts && Array.isArray(sanityPosts)) {
-       const formattedSanity: NormalizedBlogPost[] = sanityPosts.filter(isPublicBlogSummary).map((post: any) => {
-          const rawSlug = post.slug.current || post.slug;
-          const cleanSlug = rawSlug.replace(/^https?:\/\/[^\/]+\/blog\//, '').replace(/\/$/, '');
-
-          return {
-            id: post._id,
-            title: post.title,
-            slug: cleanSlug,
-            category: post.category || (post.categories?.[0]?.title) || 'General',
-            categories: post.categories,
-            excerpt: post.excerpt,
-            readingTime: post.stats?.readingTime || post.readingTime,
-            stats: post.stats,
-            publishedAt: post.publishedAt,
-            updatedAt: post.updatedAt,
-            seoTitle: post.seo?.metaTitle || post.title,
-            seoDescription: post.seo?.metaDescription || post.excerpt,
-            noIndex: post.seo?.noindex || false,
-            canonicalUrl: post.seo?.canonicalPath,
-            seo: post.seo,
-            source: 'sanity',
-            mainImage: post.mainImage,
-            heroImage: post.mainImage?.asset?.url,
-            heroImageAlt: post.mainImage?.alt || post.title,
-            author: post.author,
-            tags: post.tags || [],
-            migrationStatus: post.migrationStatus,
-         };
-       });
-
-       const unique = formattedSanity.filter((v, i, a) => a.findIndex(t => (t.slug === v.slug)) === i);
-       unique.sort((a, b) => {
-         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
-         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-         return dateB - dateA;
-       });
-
-       return unique;
-    }
-  } catch (error) {
-  }
-  return [];
+  return getFullBlogPostsForAuditOnly();
 }
 
 export async function getFullBlogPostsForAuditOnly(): Promise<NormalizedBlogPost[]> {
   try {
-    const sanityPosts = await fetchFromSanity(latestBlogPostsQuery, {}, { useCdn: false, tags: ['website.blog.summaries', 'website.homepage.latest'] });
-    if (sanityPosts && Array.isArray(sanityPosts)) {
-       // Filter here as well just to be perfectly safe, though the GROQ query handles most of it.
-       const formattedSanity: NormalizedBlogPost[] = sanityPosts.filter(isPublicBlogSummary).map((post: any) => {
-          const rawSlug = post.slug.current || post.slug;
-          const cleanSlug = rawSlug.replace(/^https?:\/\/[^\/]+\/blog\//, '').replace(/\/$/, '');
+    const localPosts = import.meta.glob('/src/content/blog/*.md', { eager: true });
+    const posts: NormalizedBlogPost[] = Object.keys(localPosts).map(filePath => {
+      const match = filePath.match(/\/([^\/]+)\.md$/);
+      const slug = match ? match[1] : '';
+      const module = localPosts[filePath] as any;
+      const frontmatter = module.frontmatter || {};
 
-          return {
-          id: post._id,
-          title: post.title,
-          slug: cleanSlug,
-          category: post.category || (post.categories?.[0]?.title) || 'General',
-          categories: post.categories,
-          excerpt: post.excerpt,
-          readingTime: post.stats?.readingTime || post.readingTime,
-          stats: post.stats,
-          publishedAt: post.publishedAt,
-          updatedAt: post.updatedAt,
-          seoTitle: post.seo?.metaTitle || post.title,
-          seoDescription: post.seo?.metaDescription || post.excerpt,
-          noIndex: post.seo?.noindex || false,
-          canonicalUrl: post.seo?.canonicalPath,
-          seo: post.seo,
-          source: 'sanity',
-          body: post.body,
-          endCta: post.endCta,
-          content: post.content,
-          mainImage: post.mainImage,
-          heroImage: post.mainImage?.asset?.url,
-          heroImageAlt: post.mainImage?.alt || post.title,
-          author: post.author,
-          tags: post.tags || [],
-          blogFaqs: post.blogFaqs,
-          relatedFaqs: post.relatedFaqs,
-          relatedServices: post.relatedServices,
-          relatedPlatforms: post.relatedPlatforms,
-          relatedPosts: Array.isArray(post.relatedPosts) ? post.relatedPosts.filter(isPublicBlogSummary).filter((rp: any) => rp.slug?.current !== cleanSlug && rp.slug !== cleanSlug).map((rp: any) => ({
-            ...rp,
-            slug: (rp.slug?.current || rp.slug || '').replace(/^https?:\/\/[^\/]+\/blog\//, '').replace(/\/$/, '')
-          })) : post.relatedPosts,
-          migrationStatus: post.migrationStatus,
-       };
-       });
+      return {
+        id: slug,
+        title: frontmatter.title || '',
+        slug: frontmatter.slug || slug,
+        category: frontmatter.category || 'General',
+        excerpt: frontmatter.excerpt || '',
+        readingTime: frontmatter.readingTime || 5,
+        publishedAt: frontmatter.publishedAt,
+        updatedAt: frontmatter.updatedAt || frontmatter.publishedAt,
+        seoTitle: frontmatter.seoTitle || frontmatter.title,
+        seoDescription: frontmatter.seoDescription || frontmatter.excerpt,
+        noIndex: frontmatter.noIndex || false,
+        canonicalUrl: frontmatter.canonicalUrl,
+        source: 'sanity', // Keeping the label 'sanity' to avoid type errors in legacy components until fully cleaned
+        content: module.compiledContent ? module.compiledContent() : '',
+        body: module.rawContent ? module.rawContent() : '',
+        heroImage: frontmatter.heroImage,
+        heroImageAlt: frontmatter.heroImageAlt,
+        author: frontmatter.author,
+        tags: frontmatter.tags || [],
+      } as NormalizedBlogPost;
+    });
 
-       // Deduplicate by slug
-       const unique = formattedSanity.filter((v, i, a) => a.findIndex(t => (t.slug === v.slug)) === i).filter(isPublicFullBlogPost);
-
-       // Sort by newest publishedAt first, fallback to updatedAt
-       unique.sort((a, b) => {
-         const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
-         const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
-         return dateB - dateA;
-       });
-
-       return unique;
-    }
+    const unique = posts.filter((v, i, a) => a.findIndex(t => (t.slug === v.slug)) === i);
+    unique.sort((a, b) => {
+      const dateA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
+      const dateB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
+      return dateB - dateA;
+    });
+    return unique;
   } catch (error) {
-    // Sanity posts fetch failed or dataset not found
+    console.error("Error fetching local posts", error);
   }
-
   return [];
 }
 

@@ -1,4 +1,3 @@
-import { getSiteSettings } from '../../sanity/queries';
 import { buildCanonicalUrl, formatTitle, formatDescription } from '../seo';
 
 export interface PageMetadata {
@@ -29,8 +28,7 @@ export async function generateMetadata({
   noindex = false,
   type = 'website'
 }: any): Promise<PageMetadata> {
-  const siteSettings = await getSiteSettings();
-  const siteName = siteSettings?.name || 'TheEduAssist';
+  const siteUrl = 'https://www.theeduassist.com';
 
   const formattedTitle = formatTitle(title);
   const formattedDescription = formatDescription(description);
@@ -40,11 +38,11 @@ export async function generateMetadata({
   const openGraphDescription = ogDescription || formattedDescription;
 
   // Default fallback image
-  let defaultImage = `${siteSettings?.url || 'https://www.theeduassist.com'}/og/theeduassist-og-image.png`;
+  let defaultImage = `${siteUrl}/og/theeduassist-og-image.png`;
   // Simple safety check on ogImage if it's passed as a relative path
   let finalOgImage = ogImage || defaultImage;
   if (finalOgImage.startsWith('/')) {
-    finalOgImage = `${siteSettings?.url || 'https://www.theeduassist.com'}${finalOgImage}`;
+    finalOgImage = `${siteUrl}${finalOgImage}`;
   }
 
   return {
