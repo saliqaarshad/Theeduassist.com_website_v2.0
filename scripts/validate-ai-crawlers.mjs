@@ -8,7 +8,7 @@ const distDir = path.join(__dirname, '../dist');
 
 async function validateAiCrawlers() {
     console.log("Validating AI Crawlers policy...");
-    const robotsPath = path.join(distDir, 'client', 'robots.txt');
+    const robotsPath = path.join(distDir, 'robots.txt');
     let hasErrors = false;
     if (fs.existsSync(robotsPath)) {
         const robotsContent = fs.readFileSync(robotsPath, 'utf8');

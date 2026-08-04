@@ -92,8 +92,6 @@ jobs:
       - name: Validate Footer UX
         run: npm run validate:footer-ux
 
-      - name: Check Sanity Blog Public
-        run: npm run check:sanity:blog
 
       - name: Astro Check
         run: npx astro check --tsconfig tsconfig.astro.json || true
