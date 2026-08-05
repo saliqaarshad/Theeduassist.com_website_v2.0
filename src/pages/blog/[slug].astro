@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.seoTitle || post.data.title} description={post.data.seoDescription || post.data.excerpt}>
+  <main class="w-full flex-grow bg-white">
+    <article class="max-w-3xl mx-auto px-6 py-16">
+      
+      <div class="mb-8">
+        <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+          {post.data.category || 'Article'}
+        </span>
+        <h1 class="text-4xl font-bold text-slate-800 mt-3 mb-4">
+          {post.data.title}
+        </h1>
+        <p class="text-slate-600 text-lg mb-4">{post.data.excerpt}</p>
+        {post.data.publishedAt && (
+          <time class="text-sm text-slate-500">
+            {new Date(post.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+        )}
+      </div>
+
+      {post.data.heroImage && (
+        <img 
+          src={post.data.heroImage} 
+          alt={post.data.heroImageAlt || post.data.title}
+          class="w-full rounded-xl mb-10 object-cover"
+        />
+      )}
+
+      <div class="prose prose-slate max-w-none">
+        <Content />
+      </div>
+
+    </article>
+  </main>
+</Layout>
