@@ -319,10 +319,9 @@ content:
               - Changes requested
               - Approved
               - Rejected
-      - name: body
+      - name: content
         label: Article Body
-        type: markdown
-        required: true
+        type: text
 
   - name: authors
     label: Authors
