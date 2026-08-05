@@ -30,7 +30,6 @@ const coreUrls = [
   'https://www.theeduassist.com/platforms/',
   'https://www.theeduassist.com/pricing/',
   'https://www.theeduassist.com/case-studies/',
-  'https://www.theeduassist.com/blog/',
   'https://www.theeduassist.com/about-us/',
   'https://www.theeduassist.com/contact/',
   'https://www.theeduassist.com/book-free-audit/',
@@ -66,97 +65,6 @@ async function generateSitemap() {
   let excludedCount = 0;
   let blogUrlsForLlms = [];
 
-  try {
-    const projectId = process.env.PUBLIC_SANITY_PROJECT_ID || 'jg4gi6mn';
-    const dataset = process.env.PUBLIC_SANITY_DATASET || 'production';
-    const apiVersion = process.env.PUBLIC_SANITY_API_VERSION || '2026-06-19';
-
-    if (projectId) {
-      // Inline dynamic import of sanity client to keep this file a simple module if needed
-      // Actually let's just use native fetch to sanity HTTP API to avoid dependency issues in this standalone script
-      const query = encodeURIComponent(`*[
-        _type == "post" &&
-        !(_id in path("drafts.**")) &&
-        defined(slug.current) &&
-        defined(title) &&
-        defined(publishedAt) &&
-        seo.noindex != true &&
-        hidden != true &&
-        reviewPending != true &&
-        !(title match "*Test*") &&
-        !(title match "*test*") &&
-        !(slug.current match "*test*") &&
-        (!defined(status) || status in ["approved", "published"]) &&
-        (!defined(migrationStatus) || migrationStatus in ["approved", "published"])
-      ]{
-        title,
-        "slug": slug.current,
-        publishedAt,
-        _updatedAt,
-        "noindex": seo.noindex,
-        hidden,
-        reviewPending
-      }`);
-
-      const sanityUrl = `https://${projectId}.apicdn.sanity.io/v${apiVersion}/data/query/${dataset}?query=${query}`;
-
-      const response = await fetch(sanityUrl);
-      if (response.ok) {
-        const json = await response.json();
-        const posts = json.result;
-
-        posts.forEach(post => {
-          const rawSlug = post.slug;
-
-          if (!rawSlug || typeof rawSlug !== 'string') {
-            excludedCount++;
-            return;
-          }
-
-          const title = (post.title || '').toLowerCase();
-          const cleanSlug = rawSlug.replace(/^https?:\/\/[^\/]+\/blog\//, '').replace(/\/$/, '');
-
-          // Filter invalid patterns and fields
-          if (
-            cleanSlug.includes('/') ||
-            cleanSlug === 'undefined' ||
-            cleanSlug === 'null' ||
-            cleanSlug === '[object Object]' ||
-            post.noindex === true ||
-            post.hidden === true ||
-            post.reviewPending === true ||
-            title.includes('test') ||
-            title.includes('do-not-publish') ||
-            title.includes('review-pending') ||
-            cleanSlug.includes('test') ||
-            cleanSlug.includes('__trashed') ||
-            cleanSlug.includes('do-not-publish') ||
-            cleanSlug.includes('review-pending')
-          ) {
-            excludedCount++;
-            return;
-          }
-
-          const fullUrl = `https://www.theeduassist.com/blog/${cleanSlug}/`;
-          blogUrls.push(generateUrlXml(fullUrl, post._updatedAt || post.publishedAt, '0.7', 'monthly'));
-          blogUrlsForLlms.push(fullUrl);
-        });
-
-        console.log(`Successfully fetched ${posts.length} posts from Sanity.`);
-      } else {
-        console.warn(`Warning: Failed to fetch from Sanity API. Status: ${response.status}`);
-      }
-    } else {
-      console.warn("Warning: Missing Sanity Project ID. Skipping dynamic blog URLs.");
-    }
-  } catch (err) {
-    console.warn("Warning: Exception occurred while fetching Sanity blog posts for sitemap. Falling back to core URLs only.", err);
-  }
-
-
-
-
-
   // Combine all clean routes for llms.txt
   const llmsUrls = [
     'https://www.theeduassist.com/',
@@ -167,7 +75,6 @@ async function generateSitemap() {
     'https://www.theeduassist.com/platforms/',
     'https://www.theeduassist.com/pricing/',
     'https://www.theeduassist.com/case-studies/',
-    'https://www.theeduassist.com/blog/',
     'https://www.theeduassist.com/about-us/',
     'https://www.theeduassist.com/contact/',
     'https://www.theeduassist.com/book-free-audit/',

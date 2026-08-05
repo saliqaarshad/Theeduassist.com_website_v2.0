@@ -6,12 +6,10 @@ export const navigation = {
     { label: 'Kajabi Services', href: '/kajabi-services/' },
     { label: 'Case Studies', href: '/case-studies/' },
     { label: 'Pricing', href: '/pricing/' },
-    { label: 'Blog', href: '/blog/' },
     { label: 'About Us', href: '/about-us/' },
   ],
   footerCompanyLinks: [
     { label: 'Home', href: '/' },
-    { label: 'Blogs', href: '/blog/' },
     { label: 'Career', href: '/careers/' },
     { label: 'About Us', href: '/about-us/' },
     { label: 'Contact Us', href: '/contact/' },

@@ -1,4 +1,3 @@
-import { getBlogPostSummaries, isPublicBlogSummary } from './getAllBlogPosts';
 import { getAllCaseStudies } from './getAllCaseStudies';
 import { getAllServices } from './getAllServices';
 
@@ -64,16 +63,6 @@ export async function getAllPublicRoutes(): Promise<PublicRoute[]> {
     path: '/case-studies/',
     title: 'Case Studies | TheEduAssist',
     pageType: 'case-study-listing',
-    indexable: true,
-    includeInSitemap: true,
-    includeInHumanSitemap: true,
-    priority: '0.8'
-  });
-
-  routes.push({
-    path: '/blog/',
-    title: 'Blog | TheEduAssist',
-    pageType: 'blog-listing',
     indexable: true,
     includeInSitemap: true,
     includeInHumanSitemap: true,
@@ -165,23 +154,6 @@ export async function getAllPublicRoutes(): Promise<PublicRoute[]> {
       includeInHumanSitemap: true,
       lastModified: cs.updatedAt || cs.publishedAt,
       priority: '0.7'
-    });
-  });
-
-  // Blog Posts dynamically
-  const blogPosts = await getBlogPostSummaries();
-  blogPosts.filter(isPublicBlogSummary).forEach(post => {
-    routes.push({
-      path: `/blog/${post.slug}/`,
-      title: `${post.title} | TheEduAssist`,
-      description: post.excerpt,
-      pageType: 'blog-detail',
-      indexable: !post.noIndex,
-      includeInSitemap: !post.noIndex,
-      includeInHumanSitemap: !post.noIndex,
-      lastModified: post.updatedAt || post.publishedAt,
-      priority: '0.7',
-      relatedCategory: post.category
     });
   });
 

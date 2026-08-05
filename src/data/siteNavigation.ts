@@ -132,7 +132,6 @@ export const siteNavigation: TopLevelNavigationItem[] = [
         label: "Company",
         links: [
           { id: "about-us", label: "About Us", href: "/about-us/", icon: "Users" },
-          { id: "blog", label: "Blog", href: "/blog/", icon: "BookOpen" },
           { id: "platforms", label: "Supported Platforms", href: "/platforms/", icon: "Database" },
           { id: "trust-centre", label: "Trust Centre", href: "/trust-centre/", icon: "Shield" },
         ]
@@ -150,7 +149,6 @@ export const footerNavigation = {
       { label: "Kajabi Services", href: "/kajabi-services/" }
   ],
   resources: [
-      { label: "Blog", href: "/blog/" },
       { label: "Case Studies", href: "/case-studies/" },
       { label: "Platforms", href: "/platforms/" }
   ],
