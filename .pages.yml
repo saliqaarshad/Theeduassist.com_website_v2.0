@@ -69,7 +69,6 @@ content:
         label: URL Slug
         type: string
         required: true
-        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
       - name: excerpt
         label: Short Description / Excerpt
         type: text
