@@ -82,7 +82,7 @@
   ],
   "redirects": [
     {
-      "source": "/enterprise-solutions/project-brief/?",
+      "source": "/enterprise-solutions/project-brief/",
       "destination": "/book-free-audit/",
       "permanent": true
     },
