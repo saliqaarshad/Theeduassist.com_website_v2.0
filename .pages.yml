@@ -319,9 +319,6 @@ content:
               - Changes requested
               - Approved
               - Rejected
-      - name: content
-        label: Article Body
-        type: text
 
   - name: authors
     label: Authors
