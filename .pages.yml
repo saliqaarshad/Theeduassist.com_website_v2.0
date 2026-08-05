@@ -319,12 +319,7 @@ content:
               - Changes requested
               - Approved
               - Rejected
-      - name: body
-        label: Article Body
-        type: rich-text
-        required: true
-        options:
-          media: blog_images
+
   - name: authors
     label: Authors
     type: collection
