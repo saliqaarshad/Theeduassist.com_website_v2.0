@@ -1,0 +1,147 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AuditHero from "../../components/audit/AuditHero.astro";
+import AuditReviewScope from "../../components/audit/AuditReviewScope.astro";
+import CalendlyCTA from "../../components/audit/CalendlyCTA.astro";
+import AuditNextSteps from "../../components/audit/AuditNextSteps.astro";
+import AuditFAQ from "../../components/audit/AuditFAQ.astro";
+import AIAnswerBlock from "../../components/ai/AIAnswerBlock.astro";
+import { webPageSchema, faqPageSchema, breadcrumbSchema } from '../../lib/seo/schema';
+import { packages } from "../../data/packages";
+
+// Required FAQ array for the Schema
+const auditFaqs = [
+  {
+    question: "Is the audit really free?",
+    answer: "Yes. The audit request helps us understand your project and recommend the right next step. Full implementation work is quoted separately."
+  },
+  {
+    question: "Do I need to have course content ready?",
+    answer: "No. You can submit an idea, rough notes, existing content, Kajabi setup, LMS, or scattered files."
+  },
+  {
+    question: "Can you review my Kajabi setup?",
+    answer: "Yes. Kajabi is one of our strongest specialties."
+  },
+  {
+    question: "Can you review LMS or WordPress content?",
+    answer: "Yes. We can review LMS content, WordPress course pages, Google Drive folders, PDFs, videos, and other training materials."
+  },
+  {
+    question: "Will you give pricing?",
+    answer: "We can recommend a package or custom quote after reviewing your audit details. Pricing depends on scope, content volume, platform, timeline, and launch needs."
+  },
+  {
+    question: "Do you guarantee sales?",
+    answer: "No. We help improve structure, learning experience, platform setup, funnels, and launch readiness, but sales depend on offer, audience, traffic, pricing, trust, and other factors."
+  }
+];
+
+const aiAnswers = [
+  { q: "Is the audit really free?", a: "Yes. The initial audit request helps TheEduAssist understand your project scope and recommend the best service path." },
+  { q: "What should I prepare before booking an audit?", a: "You can submit rough ideas, course goals, existing content (PDFs, videos, slides), Kajabi login status, LMS details, or scattered files. You do not need to have everything perfectly organized beforehand." },
+  { q: "Will I get pricing during the audit?", a: "Yes, once the team reviews your project details, they will recommend a package or provide a custom starting quote based on content volume, platform, and timeline." }
+];
+
+const jsonLd = [
+  webPageSchema(
+    "Get a 24–48 Hour Course/LMS Review | TheEduAssist",
+    "Submit your course, Kajabi, LMS, content conversion, AI e-learning, funnel, or support request and TheEduAssist will reply within 24–48 hours with the best service path, estimated scope, and next step.",
+    "/book-free-audit/"
+  ),
+  faqPageSchema(auditFaqs),
+  breadcrumbSchema([
+    { name: "Home", urlPath: "/" },
+    { name: "Get 24–48 Hour Review", urlPath: "/book-free-audit/" }
+  ])
+];
+
+const trustChips = [
+  "Free Audit",
+  "Course Review",
+  "Kajabi Review",
+  "LMS Review",
+  "Content Review",
+  "Funnel Review",
+  "Launch Review"
+];
+---
+<Layout
+  title="Get a 24–48 Hour Course/LMS Review | TheEduAssist"
+  description="Submit your course, Kajabi, LMS, content conversion, AI e-learning, funnel, or support request and TheEduAssist will reply within 24–48 hours with the best service path, estimated scope, and next step."
+  canonicalPath="/book-free-audit/"
+  jsonLd={jsonLd}
+>
+
+  <AuditHero
+    title="Get a 24–48 Hour Course/LMS Review"
+    subtitle="Tell us what you are building, improving, migrating, converting, or launching. TheEduAssist will review your request and recommend the right service path, estimated scope, and next step within 24–48 hours."
+    primaryCtaLabel="Start Request Form"
+    primaryCtaLink="#audit-form-section"
+    secondaryCtaLabel="Email Instead"
+    secondaryCtaLink="mailto:Info@theeduassist.com?subject=TheEduAssist%20Project%20Inquiry&body=Hi%20TheEduAssist%2C%0A%0AI%20would%20like%20to%20discuss%20a%20course%2C%20Kajabi%2C%20LMS%2C%20content%20conversion%2C%20or%20e-learning%20project.%0A%0AMy%20project%20details%3A%0A"
+    trustChips={trustChips}
+  />
+
+  <AuditReviewScope />
+
+
+  <section id="audit-form-section" class="py-24 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="bg-white p-4 md:p-10 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+
+        <div class="mb-10 text-center">
+          <h2 class="text-3xl font-bold mb-4 text-slate-900">Tell Us About Your Project</h2>
+          <p class="text-slate-600 max-w-2xl mx-auto text-lg mb-8">Tell us what you are building, improving, migrating, converting, or launching. We’ll recommend the best service path within 24–48 hours.</p>
+
+          <div class="bg-blue-50 border border-blue-100 rounded-xl p-6 text-center shadow-sm max-w-2xl mx-auto mb-8">
+            <h3 class="text-brand-navy font-bold text-lg mb-2">For Organizations and Enterprise Learning Teams</h3>
+            <p class="text-slate-600 text-sm mb-0">L&D directors, HR leaders, and product managers can use this same form to submit requirements for internal academies, employee onboarding, or compliance training rollouts.</p>
+          </div>
+
+          <div class="bg-[#F8FAFC] border border-[#27496D]/20 rounded-xl p-6 text-center shadow-sm max-w-2xl mx-auto">
+            <h3 class="text-brand-navy font-bold text-lg mb-2">What happens next?</h3>
+            <p class="text-slate-600 text-sm mb-4">Submit your details below. Our team will review your project scope and follow up with a recommended service path, timeline, and starting quote.</p>
+            <div class="text-xs text-slate-500 border-t border-slate-200 pt-4">
+              Final scope and pricing depend on content volume, platform, course length, page count, review rounds, automations, integrations, and launch support needs.
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full mx-auto relative rounded-lg border border-slate-100" style="overflow-x: hidden;">
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSceDHOuoN8pGLzkG80JDiQFFtZRr9mxQTHkVRZnWqe3pnesDA/viewform?embedded=true"
+            width="100%"
+            height="4800"
+            class="border-0 bg-white"
+            title="TheEduAssist 24–48 Hour Course Review Form"
+            loading="lazy"
+          >Loading…</iframe>
+        </div>
+
+        <div class="mt-8 text-center border-t border-slate-100 pt-6">
+          <p class="text-slate-600 mb-4">Having trouble viewing the form?</p>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSceDHOuoN8pGLzkG80JDiQFFtZRr9mxQTHkVRZnWqe3pnesDA/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 px-6 py-3 rounded-md font-semibold transition-colors focus-ring"
+          >
+            Open Review Form in New Tab
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <CalendlyCTA />
+
+  <AuditNextSteps />
+
+  <AIAnswerBlock questions={aiAnswers} />
+
+  <AuditFAQ />
+
+</Layout>

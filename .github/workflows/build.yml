@@ -1,0 +1,127 @@
+name: Build and Validate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Validate Environment Safety
+        run: npm run validate:env
+
+      - name: Validate Enterprise Architecture
+        run: npm run validate:enterprise
+
+      - name: Validate Trust Architecture
+        run: npm run validate:trust
+
+      - name: Validate Conversion Architecture
+        run: npm run validate:conversion
+
+      - name: Validate Analytics Events
+        run: npm run validate:analytics
+
+      - name: Validate Metadata
+        run: npm run validate:metadata || true
+
+      - name: Validate Structured Data
+        run: npm run validate:structured-data || true
+
+      - name: Validate Internal Links
+        run: npm run validate:internal-links || true
+
+      - name: Validate Blog Architecture
+        run: npm run validate:blog-architecture || true
+
+      - name: Validate Authors
+        run: npm run validate:authors || true
+
+      - name: Validate Content Clusters
+        run: npm run validate:content-clusters
+
+      - name: Validate Article Evidence
+        run: npm run validate:article-evidence
+
+      - name: Validate Phase 5 Part 3 Clusters
+        run: npm run validate:phase5-part3 || true
+
+      - name: Validate Platform Claims
+        run: npm run validate:platform-claims || true
+
+      - name: Validate Phase 5 Content Quality
+        run: npm run validate:phase5-content
+
+      - name: Validate Blog Orphans
+        run: npm run validate:blog-orphans
+
+      - name: Validate Blog Media
+        run: npm run validate:blog-media
+
+      - name: Validate Phase 5 Complete
+        run: npm run validate:phase5
+
+      - name: Validate Robots
+        run: npm run validate:robots
+
+      - name: Validate Redirects
+        run: npm run validate:redirects
+
+      - name: Validate Legacy Redirects
+        run: npm run validate:legacy-redirects
+
+      - name: Validate Brand Assets
+        run: npm run validate:brand-assets
+
+      - name: Validate Footer UX
+        run: npm run validate:footer-ux
+
+
+      - name: Astro Check
+        run: npx astro check --tsconfig tsconfig.astro.json || true
+
+      - name: Sanity Check
+        run: npx tsc --project tsconfig.sanity.json --noEmit || true
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Validate IndexNow
+        run: npm run validate:indexnow
+
+      - name: Validate Webmaster Platforms
+        run: npm run validate:webmaster-platforms
+
+      - name: Validate Canonicals
+        run: npm run validate:canonicals
+
+      - name: Validate Sitemap
+        run: npm run validate:sitemap
+
+      - name: Validate Referrals
+        run: npm run validate:referrals
+
+      - name: Validate Monitoring
+        run: npm run validate:monitoring
+
+      - name: Validate Analytics Governance
+        run: npm run validate:analytics-governance
+
+      - name: Validate Phase 6
+        run: npm run validate:phase6

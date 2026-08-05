@@ -1,0 +1,27 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import LocationHub from '../../components/locations/LocationHub.astro';
+import { regions, countries } from '../../data/regionsAndCountries';
+import { cities } from '../../data/cities';
+
+const title = "Global E-Learning & Course Development Locations | TheEduAssist";
+const description = "Explore TheEduAssist's global locations. We provide remote e-learning development, Kajabi setup, and LMS migration services across North America, Europe, Asia, and the Middle East.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Global E-Learning Service Locations",
+  "itemListElement": regions.map((r, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `https://www.theeduassist.com/locations/${r.slug}/`,
+    "name": r.name
+  }))
+};
+---
+
+<Layout title={title} description={description} jsonLd={[schema]}>
+  <LocationHub regions={regions} countries={countries} cities={cities} />
+</Layout>

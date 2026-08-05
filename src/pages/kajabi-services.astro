@@ -1,0 +1,74 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Import new components
+import KajabiHero from "../components/kajabi/KajabiHero.astro";
+import KajabiAudience from "../components/kajabi/KajabiAudience.astro";
+import KajabiSystemOverview from "../components/kajabi/KajabiSystemOverview.astro";
+import KajabiCourseArchitecture from "../components/kajabi/KajabiCourseArchitecture.astro";
+import KajabiWebsitePages from "../components/kajabi/KajabiWebsitePages.astro";
+import KajabiProductsOffers from "../components/kajabi/KajabiProductsOffers.astro";
+import KajabiCheckout from "../components/kajabi/KajabiCheckout.astro";
+import KajabiFunnelsEmail from "../components/kajabi/KajabiFunnelsEmail.astro";
+import KajabiAutomations from "../components/kajabi/KajabiAutomations.astro";
+import KajabiCustomerJourney from "../components/kajabi/KajabiCustomerJourney.astro";
+import KajabiMigration from "../components/kajabi/KajabiMigration.astro";
+import KajabiQualityAssurance from "../components/kajabi/KajabiQualityAssurance.astro";
+import KajabiSupportOptions from "../components/kajabi/KajabiSupportOptions.astro";
+import KajabiProof from "../components/kajabi/KajabiProof.astro";
+import KajabiFAQ from "../components/kajabi/KajabiFAQ.astro";
+import KajabiFinalCTA from "../components/kajabi/KajabiFinalCTA.astro";
+
+import { serviceSchema, faqPageSchema, breadcrumbSchema } from '../lib/seo/schema';
+
+// Visible FAQs mapping to Schema
+const faqs = [
+  { question: "What can TheEduAssist build in Kajabi?", answer: "TheEduAssist can support course structure, Course setup, website and landing pages, Products, Offers, checkout, email journeys, Automations, migration, testing and ongoing improvement. The exact scope depends on the client’s goals and Kajabi plan." },
+  { question: "Can you improve an existing Kajabi website?", answer: "Yes. Existing pages, navigation, mobile layouts, branding, lead journeys and customer access can be reviewed and improved. Legacy templates may require a controlled rebuild rather than an automatic transfer." },
+  { question: "Can you migrate an existing course to Kajabi?", answer: "Yes. TheEduAssist can audit the source material, map the curriculum, prepare content, rebuild the course and test access. Available migration options depend on the source platform and its export capabilities." },
+  { question: "Do you help organize course content?", answer: "Yes. Course architecture and instructional design are central parts of the service. Existing books, videos, documents and training materials can be organized into modules, lessons, activities and learner resources." },
+  { question: "Can you configure Products, Offers and checkout?", answer: "Yes. Support can include Product setup, Offer configuration, pricing, checkout design, customer access, coupons and post-purchase destinations. Feature availability can depend on the Kajabi account and payment setup." },
+  { question: "Can you create email campaigns and Automations?", answer: "Yes. TheEduAssist can map and configure lead, purchase, onboarding and learner communication flows using the tools available in the client’s Kajabi plan." },
+  { question: "Can you improve the customer Library experience?", answer: "Yes. Support can include Library organization, Product naming, thumbnails, navigation, login guidance and testing of the customer-access journey." },
+  { question: "Do you provide ongoing Kajabi support?", answer: "Yes. Ongoing support may include page updates, Course changes, new Offers, email adjustments, Automation testing, QA and launch support." },
+  { question: "What happens during the Kajabi Review?", answer: "TheEduAssist reviews the submitted information about the client’s current or planned Kajabi setup and recommends the clearest next step. It is not a promise that the complete project will be delivered within 24–48 hours." }
+];
+
+const jsonLd = [
+  serviceSchema(
+    "Kajabi Services",
+    "TheEduAssist helps creators, coaches, educators and training businesses plan, build, migrate and improve Kajabi courses, websites, Products, Offers, checkout experiences, emails and Automations.",
+    "/kajabi-services/"
+  ),
+  faqPageSchema(faqs),
+  breadcrumbSchema([
+    { name: "Home", urlPath: "/" },
+    { name: "Kajabi Services", urlPath: "/kajabi-services/" }
+  ])
+];
+---
+<Layout
+  title="Kajabi Services | Course, Website, Offer and Automation Support"
+  description="TheEduAssist helps creators, coaches, educators and training businesses plan, build, migrate and improve Kajabi courses, websites, Products, Offers, checkout experiences, emails and Automations."
+  canonicalPath="/kajabi-services/"
+  jsonLd={jsonLd}
+>
+
+  <KajabiHero />
+  <KajabiAudience />
+  <KajabiSystemOverview />
+  <KajabiCourseArchitecture />
+  <KajabiWebsitePages />
+  <KajabiProductsOffers />
+  <KajabiCheckout />
+  <KajabiFunnelsEmail />
+  <KajabiAutomations />
+  <KajabiCustomerJourney />
+  <KajabiMigration />
+  <KajabiQualityAssurance />
+  <KajabiSupportOptions />
+  <KajabiProof />
+  <KajabiFAQ />
+  <KajabiFinalCTA />
+
+</Layout>

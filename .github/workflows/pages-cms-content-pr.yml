@@ -1,0 +1,55 @@
+name: "Pages CMS: Submit Content for Review"
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: "Pages CMS payload"
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate-and-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Validate Content
+        run: npm run validate:content
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Create or Update Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }}
+          base: main
+          title: "content: Updates from Pages CMS"
+          body: |
+            Automated PR created from Pages CMS updates on branch `${{ github.ref_name }}`.
+
+            - [x] Content validation passed
+            - [x] Build check passed
+
+            Please review the content changes before merging.
+          labels: "content"
+          add-paths: |
+            src/content/
+            public/images/
+          commit-message: "content: Save updates from Pages CMS"

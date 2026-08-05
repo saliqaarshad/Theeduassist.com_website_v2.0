@@ -1,0 +1,9 @@
+Old URL,Old Hostname,Old Path,Current Response,Current Redirect Destination,Old Content Type,Old Page Purpose,Traffic Evidence,Backlink Evidence,Equivalent New Route,Final Decision,Required Status,Priority,Notes
+http://theeduassist.com/,theeduassist.com,/,301,https://www.theeduassist.com/,homepage,homepage,High,High,/,REDIRECT,301,High,Legacy non-www to www
+https://theeduassist.com/,theeduassist.com,/,301,https://www.theeduassist.com/,homepage,homepage,High,High,/,REDIRECT,301,High,Legacy non-www to www
+https://www.theeduassist.com/case-studies-1/,www.theeduassist.com,/case-studies-1/,404,,page,case studies,Medium,Medium,/case-studies/,REDIRECT,301,High,Old case studies route
+https://www.theeduassist.com/kajabi-virtual-assistant-services/,www.theeduassist.com,/kajabi-virtual-assistant-services/,404,,page,kajabi services,Medium,Medium,/kajabi-services/,REDIRECT,301,High,Old Kajabi services route
+https://www.theeduassist.com/ebook-services/,www.theeduassist.com,/ebook-services/,404,,page,ebook services,Low,Low,/services/content-conversion/,REDIRECT,301,Medium,Mapped to content conversion
+https://www.theeduassist.com/tag/thinkific-marketing/,www.theeduassist.com,/tag/thinkific-marketing/,404,,archive,tag,Low,Low,,410,410,Medium,No exact category equivalent, intentional 410
+https://www.theeduassist.com/tag/theeduassist-com-course-creation/,www.theeduassist.com,/tag/theeduassist-com-course-creation/,404,,archive,tag,Low,Low,,410,410,Medium,No exact category equivalent, intentional 410
+https://www.theeduassist.com/jobs/lead-generation-internfresh-grads-unpaid/,www.theeduassist.com,/jobs/lead-generation-internfresh-grads-unpaid/,404,,page,job listing,Low,Low,,410,410,Medium,Expired job listing, intentional 410

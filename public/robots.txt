@@ -1,0 +1,27 @@
+# Search Discovery Crawlers
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Foundation Model Training Crawlers
+User-agent: GPTBot
+Disallow: /
+
+# General Policy
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /studio/
+Disallow: /preview/
+Disallow: /_internal/
+
+Sitemap: https://www.theeduassist.com/sitemap.xml

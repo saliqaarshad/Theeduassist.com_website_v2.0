@@ -1,0 +1,62 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  primaryCtaLabel?: string;
+  primaryCtaLink?: string;
+  serviceSlug: string;
+}
+
+const {
+  title = "Ready to Discuss Your Project?",
+  description = "Get a 24–48 Hour Review and we’ll review your goals to recommend the right path.",
+  primaryCtaLabel = "Get Your 24-48 Hour Review",
+  primaryCtaLink = "/book-free-audit/",
+  serviceSlug
+} = Astro.props;
+---
+<section class="py-24 bg-brand-primary text-white relative overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-10">
+        <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0,100 C30,50 70,50 100,0 L100,100 Z" fill="currentColor"></path>
+        </svg>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <h2 class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">{title}</h2>
+        <p class="text-xl text-slate-300 mb-10 leading-relaxed max-w-3xl mx-auto">
+            {description}
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href={`${primaryCtaLink}?service=${serviceSlug}&source=service-page`} target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-brand-accent text-white px-8 py-4 rounded-md font-bold text-lg hover-lift click-press focus-ring transition-all hover:bg-white hover:text-brand-navy shadow-lg text-center">
+                {primaryCtaLabel}
+            </a>
+            <button
+                type="button"
+                data-service-slug={serviceSlug}
+                class="tawk-service-btn w-full sm:w-auto bg-transparent border-2 border-white/30 text-white px-8 py-4 rounded-md font-bold text-lg hover-lift click-press focus-ring transition-all hover:bg-white/10 text-center"
+            >
+                Start This Service
+            </button>
+        </div>
+    </div>
+
+<script>
+  import { openStartServiceChat } from '../../utils/tawkSales';
+  document.addEventListener('DOMContentLoaded', () => {
+    const btns = document.querySelectorAll('.tawk-service-btn');
+    btns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = e.currentTarget as HTMLButtonElement;
+        openStartServiceChat({
+          serviceSlug: target.dataset.serviceSlug || '',
+          pageUrl: window.location.href,
+          pageTitle: document.title,
+        });
+      });
+    });
+  });
+</script>
+</section>

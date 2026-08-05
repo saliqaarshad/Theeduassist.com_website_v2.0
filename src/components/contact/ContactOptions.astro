@@ -1,0 +1,64 @@
+---
+import Button from '../ui/Button.astro';
+
+export interface Props {
+  email: string;
+}
+
+const { email } = Astro.props;
+---
+
+<section class="py-16 bg-slate-50">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center text-slate-900 mb-12">Choose the Best Way to Reach Us</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Card 1 -->
+      <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm flex flex-col h-full">
+        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">Get a 24-48 Hour Review</h3>
+        <p class="text-slate-600 mb-6 flex-grow">
+          <strong class="font-medium text-slate-800">Best for:</strong> Course, Kajabi, LMS, content conversion, AI support, funnel, or launch projects.
+        </p>
+        <Button href="/book-free-audit/" variant="primary" class="w-full text-center">Get 24–48 Hour Review</Button>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm flex flex-col h-full">
+        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">Book a Call / Demo</h3>
+        <p class="text-slate-600 mb-6 flex-grow">
+          <strong class="font-medium text-slate-800">Best for:</strong> Discussing your project scope, timeline, and next steps on a quick video call.
+        </p>
+        <Button href="https://calendly.com/eduassist-talk/30min" target="_blank" rel="noopener noreferrer" variant="outline" class="w-full text-center">Book a Call / Demo</Button>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm flex flex-col h-full">
+        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">Email Our Team</h3>
+        <p class="text-slate-600 mb-6 flex-grow">
+          <strong class="font-medium text-slate-800">Best for:</strong> General questions and partnership inquiries.
+        </p>
+        <div class="mb-4">
+           <a href="mailto:Info@theeduassist.com?subject=TheEduAssist%20Project%20Inquiry&body=Hi%20TheEduAssist%2C%0A%0AI%20would%20like%20to%20discuss%20a%20course%2C%20Kajabi%2C%20LMS%2C%20content%20conversion%2C%20or%20e-learning%20project.%0A%0AMy%20project%20details%3A%0A" aria-label="Email TheEduAssist" class="text-blue-600 hover:text-blue-800 font-medium transition-colors break-all">{email}</a>
+        </div>
+        <Button href="mailto:Info@theeduassist.com?subject=TheEduAssist%20Project%20Inquiry&body=Hi%20TheEduAssist%2C%0A%0AI%20would%20like%20to%20discuss%20a%20course%2C%20Kajabi%2C%20LMS%2C%20content%20conversion%2C%20or%20e-learning%20project.%0A%0AMy%20project%20details%3A%0A" variant="outline" class="w-full text-center">Email Our Team</Button>
+      </div>
+
+    </div>
+  </div>
+</section>

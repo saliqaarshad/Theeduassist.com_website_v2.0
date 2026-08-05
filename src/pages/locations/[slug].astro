@@ -1,0 +1,116 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Layout.astro';
+import { regions, countries } from '../../data/regionsAndCountries';
+import { cities } from '../../data/cities';
+
+import RegionTemplate from '../../components/locations/RegionTemplate.astro';
+import CountryTemplate from '../../components/locations/CountryTemplate.astro';
+import CityTemplate from '../../components/locations/CityTemplate.astro';
+
+export async function getStaticPaths() {
+  const paths = [];
+
+  // Regions
+  regions.forEach((region) => {
+    paths.push({ params: { slug: region.slug }, props: { type: 'region', data: region } });
+  });
+
+  // Countries
+  countries.forEach((country) => {
+    paths.push({ params: { slug: country.slug }, props: { type: 'country', data: country } });
+  });
+
+  // Cities
+  cities.forEach((city) => {
+    if (city.indexStatus === 'index') {
+      paths.push({ params: { slug: city.slug }, props: { type: 'city', data: city } });
+    }
+  });
+
+  return paths;
+}
+
+const { type, data: itemData } = Astro.props;
+
+let title = '';
+let description = '';
+let schemas = [];
+
+if (type === 'region') {
+  title = `E-Learning Development Services in ${itemData.name} | TheEduAssist`;
+  description = `Explore TheEduAssist's e-learning development, Kajabi setup, and LMS migration services in ${itemData.name}.`;
+
+  const regionCountries = countries.filter(c => c.region === itemData.slug);
+
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `Countries in ${itemData.name}`,
+    "itemListElement": regionCountries.map((c, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": `https://www.theeduassist.com/locations/${c.slug}/`,
+      "name": c.name
+    }))
+  });
+} else if (type === 'country') {
+  title = `E-Learning Development Services in ${itemData.name} | TheEduAssist`;
+  description = `TheEduAssist helps ${itemData.name} businesses, coaches, and universities build online courses and LMS training systems.`;
+} else if (type === 'city') {
+  title = itemData.metaTitle;
+  description = itemData.metaDescription;
+
+  if (itemData.faqQuestions && itemData.faqQuestions.length > 0) {
+      schemas.push({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": itemData.faqQuestions.map(faq => ({
+              "@type": "Question",
+              "name": faq.q,
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": faq.a
+              }
+          }))
+      });
+  }
+
+  schemas.push({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+          {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.theeduassist.com/"
+          },
+          {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Locations",
+              "item": "https://www.theeduassist.com/locations/"
+          },
+          {
+              "@type": "ListItem",
+              "position": 3,
+              "name": itemData.cityName,
+              "item": `https://www.theeduassist.com/locations/${itemData.slug}/`
+          }
+      ]
+  });
+}
+---
+<Layout title={title} description={description} noindex={false} jsonLd={schemas}>
+  {type === 'region' && (
+      <RegionTemplate regionData={itemData} countries={countries.filter(c => c.region === itemData.slug)} />
+  )}
+  {type === 'country' && (
+      <CountryTemplate countryData={itemData} cities={cities.filter(c => c.country === itemData.name || (itemData.slug === 'united-states' && c.cityName === 'New York') || (itemData.slug === 'united-kingdom' && c.cityName === 'London') || (itemData.slug === 'united-arab-emirates' && c.cityName === 'Dubai') || (itemData.slug === 'australia' && c.cityName === 'Sydney') )} />
+  )}
+  {type === 'city' && (
+      <CityTemplate cityData={itemData} />
+  )}
+</Layout>
