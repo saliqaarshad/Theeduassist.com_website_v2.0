@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -7,12 +7,13 @@ export async function getStaticPaths() {
   return posts
     .filter((post) => post.data.slug || post.id)
     .map((post) => ({
-      params: { slug: post.data.slug || post.id.replace('.md', '') },
+      params: { slug: post.data.slug || post.id.replace(/\.md$/, '') },
       props: { post },
     }));
 }
 
 const { post } = Astro.props;
+const { Content } = await render(post);
 ---
 
 <Layout title={post.data.seoTitle || post.data.title || 'Blog'} description={post.data.seoDescription || post.data.excerpt || ''}>
@@ -42,8 +43,8 @@ const { post } = Astro.props;
         />
       )}
 
-      <div class="prose prose-slate max-w-none whitespace-pre-wrap">
-        {post.data.content}
+      <div class="prose prose-slate max-w-none">
+        <Content />
       </div>
 
     </article>
