@@ -17,8 +17,24 @@ const { Content } = await render(post);
 ---
 
 <Layout title={post.data.seoTitle || post.data.title || 'Blog'} description={post.data.seoDescription || post.data.excerpt || ''}>
+
+  <!-- Reading Progress Bar -->
+  <div id="progress-bar" class="fixed top-0 left-0 h-1 bg-[var(--color-primary)] z-50 transition-all duration-150" style="width: 0%"></div>
+
   <main class="w-full flex-grow bg-white">
-    <article class="max-w-3xl mx-auto px-6 py-16">
+
+    <!-- Breadcrumbs -->
+    <div class="max-w-3xl mx-auto px-6 pt-8">
+      <nav class="text-sm text-slate-500 flex items-center gap-2">
+        <a href="/" class="hover:text-[var(--color-primary)]">Home</a>
+        <span>›</span>
+        <a href="/blog/" class="hover:text-[var(--color-primary)]">Blog</a>
+        <span>›</span>
+        <span class="text-slate-800 truncate max-w-xs">{post.data.title}</span>
+      </nav>
+    </div>
+
+    <article class="max-w-3xl mx-auto px-6 py-10">
       
       <div class="mb-8">
         <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
@@ -49,4 +65,40 @@ const { Content } = await render(post);
 
     </article>
   </main>
+
+  <!-- Back to Top Button -->
+  <button 
+    id="back-to-top" 
+    class="fixed bottom-8 right-8 bg-[var(--color-primary)] text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-90 z-50"
+    aria-label="Back to top"
+  >
+    ↑
+  </button>
+
+  <script>
+    // Reading Progress Bar
+    const progressBar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      if (progressBar) progressBar.style.width = `${progress}%`;
+    });
+
+    // Back to Top Button
+    const backToTop = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop?.classList.remove('opacity-0');
+        backToTop?.classList.add('opacity-100');
+      } else {
+        backToTop?.classList.remove('opacity-100');
+        backToTop?.classList.add('opacity-0');
+      }
+    });
+    backToTop?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+
 </Layout>
