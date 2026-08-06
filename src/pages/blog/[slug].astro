@@ -4,16 +4,22 @@ import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts
-    .filter((post) => post.data.slug || post.id)
-    .map((post) => ({
-      params: { slug: post.data.slug || post.id.replace(/\.md$/, '') },
-      props: { post },
-    }));
+  const sortedPosts = posts.sort((a, b) =>
+    new Date(b.data.publishedAt ?? 0).getTime() - new Date(a.data.publishedAt ?? 0).getTime()
+  );
+  return sortedPosts.map((post, index) => ({
+    params: { slug: post.data.slug || post.id.replace(/\.md$/, '') },
+    props: { 
+      post,
+      prevPost: sortedPosts[index + 1] || null,
+      nextPost: sortedPosts[index - 1] || null,
+    },
+  }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { post, prevPost, nextPost } = Astro.props;
+const { Content, headings } = await render(post);
+const pageUrl = Astro.url.href;
 ---
 
 <Layout title={post.data.seoTitle || post.data.title || 'Blog'} description={post.data.seoDescription || post.data.excerpt || ''}>
@@ -24,7 +30,7 @@ const { Content } = await render(post);
   <main class="w-full flex-grow bg-white">
 
     <!-- Breadcrumbs -->
-    <div class="max-w-3xl mx-auto px-6 pt-8">
+    <div class="max-w-4xl mx-auto px-6 pt-8">
       <nav class="text-sm text-slate-500 flex items-center gap-2">
         <a href="/" class="hover:text-[var(--color-primary)]">Home</a>
         <span>›</span>
@@ -34,36 +40,117 @@ const { Content } = await render(post);
       </nav>
     </div>
 
-    <article class="max-w-3xl mx-auto px-6 py-10">
+    <div class="max-w-4xl mx-auto px-6 py-10 flex gap-12">
       
-      <div class="mb-8">
-        <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
-          {post.data.category || 'Article'}
-        </span>
-        <h1 class="text-4xl font-bold text-slate-800 mt-3 mb-4">
-          {post.data.title}
-        </h1>
-        <p class="text-slate-600 text-lg mb-4">{post.data.excerpt}</p>
-        {post.data.publishedAt && (
-          <time class="text-sm text-slate-500">
-            {new Date(post.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-        )}
-      </div>
+      <!-- Main Article -->
+      <article class="flex-1 min-w-0">
+        
+        <div class="mb-8">
+          <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+            {post.data.category || 'Article'}
+          </span>
+          <h1 class="text-4xl font-bold text-slate-800 mt-3 mb-4">
+            {post.data.title}
+          </h1>
+          <p class="text-slate-600 text-lg mb-4">{post.data.excerpt}</p>
+          {post.data.publishedAt && (
+            <time class="text-sm text-slate-500">
+              {new Date(post.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+          )}
+        </div>
 
-      {post.data.heroImage && (
-        <img 
-          src={post.data.heroImage} 
-          alt={post.data.heroImageAlt || post.data.title}
-          class="w-full rounded-xl mb-10 object-cover"
-        />
+        {post.data.heroImage && (
+          <img 
+            src={post.data.heroImage} 
+            alt={post.data.heroImageAlt || post.data.title}
+            class="w-full rounded-xl mb-10 object-cover"
+          />
+        )}
+
+        <div class="prose prose-slate max-w-none">
+          <Content />
+        </div>
+
+        <!-- Social Share Buttons -->
+        <div class="mt-12 pt-8 border-t border-slate-200">
+          <p class="text-sm font-semibold text-slate-600 mb-4">Share this article:</p>
+          <div class="flex gap-3">
+            <a 
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title || '')}&url=${encodeURIComponent(pageUrl)}`}
+              target="_blank"
+              class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:opacity-80 transition"
+            >
+              𝕏 Twitter
+            </a>
+            <a 
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`}
+              target="_blank"
+              class="px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:opacity-80 transition"
+            >
+              LinkedIn
+            </a>
+            <a 
+              href={`https://wa.me/?text=${encodeURIComponent((post.data.title || '') + ' ' + pageUrl)}`}
+              target="_blank"
+              class="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:opacity-80 transition"
+            >
+              WhatsApp
+            </a>
+            <button 
+              id="copy-link"
+              class="px-4 py-2 bg-slate-100 text-slate-700 text-sm rounded-lg hover:bg-slate-200 transition"
+            >
+              Copy Link
+            </button>
+          </div>
+        </div>
+
+        <!-- Previous/Next Navigation -->
+        <div class="mt-12 grid grid-cols-2 gap-4">
+          {prevPost && (
+            <a 
+              href={`/blog/${prevPost.data.slug || prevPost.id.replace(/\.md$/, '')}/`}
+              class="p-4 border border-slate-200 rounded-xl hover:border-[var(--color-primary)] transition"
+            >
+              <p class="text-xs text-slate-500 mb-1">← Previous</p>
+              <p class="text-sm font-semibold text-slate-800 line-clamp-2">{prevPost.data.title}</p>
+            </a>
+          )}
+          {nextPost && (
+            <a 
+              href={`/blog/${nextPost.data.slug || nextPost.id.replace(/\.md$/, '')}/`}
+              class="p-4 border border-slate-200 rounded-xl hover:border-[var(--color-primary)] transition text-right ml-auto w-full"
+            >
+              <p class="text-xs text-slate-500 mb-1">Next →</p>
+              <p class="text-sm font-semibold text-slate-800 line-clamp-2">{nextPost.data.title}</p>
+            </a>
+          )}
+        </div>
+
+      </article>
+
+      <!-- Table of Contents Sidebar -->
+      {headings.length > 0 && (
+        <aside class="hidden lg:block w-64 shrink-0">
+          <div class="sticky top-8">
+            <p class="text-sm font-semibold text-slate-800 mb-4">Table of Contents</p>
+            <nav class="space-y-2">
+              {headings.map((heading) => (
+                <a 
+                  href={`#${heading.slug}`}
+                  class={`block text-sm text-slate-500 hover:text-[var(--color-primary)] transition ${heading.depth === 2 ? 'pl-0' : 'pl-4'}`}
+                >
+                  {heading.text}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
       )}
 
-      <div class="prose prose-slate max-w-none">
-        <Content />
-      </div>
+    </div>
 
-    </article>
   </main>
 
   <!-- Back to Top Button -->
@@ -98,6 +185,16 @@ const { Content } = await render(post);
     });
     backToTop?.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Copy Link Button
+    const copyBtn = document.getElementById('copy-link');
+    copyBtn?.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href);
+      if (copyBtn) copyBtn.textContent = 'Copied!';
+      setTimeout(() => {
+        if (copyBtn) copyBtn.textContent = 'Copy Link';
+      }, 2000);
     });
   </script>
 
