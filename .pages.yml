@@ -1,5 +1,13 @@
 media:
-  - public/images/uploads
+  - name: blog_images
+    label: Blog Images
+    input: public/images/blog
+    output: /images/blog
+    extensions:
+      - jpg
+      - jpeg
+      - png
+      - webp
 
 content:
   - name: blog
@@ -13,6 +21,19 @@ content:
         label: Title
         type: string
         required: true
+      - name: excerpt
+        label: Excerpt
+        type: text
+      - name: category
+        label: Category
+        type: string
+      - name: publishedAt
+        label: Publication Date
+        type: date
+      - name: heroImage
+        label: Featured Image
+        type: image
+        media: blog_images
       - name: body
         label: Content
         type: rich-text
