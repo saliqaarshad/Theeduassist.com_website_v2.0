@@ -4,6 +4,7 @@ excerpt: Discover how TheEduAssist helps educators and learners achieve more
   through innovative eLearning solutions.
 category: general
 publishedAt: 2026-08-06
+heroImage: /images/blog/4d09c9dfe5dc3ef91c9e8afa1cb556ab.jpg
 ---
 TheEduAssist is dedicated to empowering educators and learners worldwide through innovative educational technology solutions.
 
