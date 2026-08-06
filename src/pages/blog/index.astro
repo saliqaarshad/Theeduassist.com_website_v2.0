@@ -14,6 +14,21 @@ function getReadTime(body: string = '') {
   const minutes = Math.ceil(words / wordsPerMinute);
   return minutes < 1 ? 1 : minutes;
 }
+
+// Get unique categories
+const categories = ['All', ...new Set(sortedPosts.map(p => p.data.category || 'Article').filter(Boolean))];
+
+// Prepare posts data for client-side search
+const postsData = sortedPosts.map(post => ({
+  slug: post.data.slug || post.id.replace(/\.md$/, ''),
+  title: post.data.title || '',
+  excerpt: post.data.excerpt || '',
+  category: post.data.category || 'Article',
+  heroImage: post.data.heroImage || '',
+  heroImageAlt: post.data.heroImageAlt || '',
+  publishedAt: post.data.publishedAt || '',
+  readTime: getReadTime(post.body),
+}));
 ---
 
 <Layout title="Blog | TheEduAssist" description="Practical guidance for building and improving learning experiences.">
@@ -28,60 +43,131 @@ function getReadTime(body: string = '') {
       <p class="text-slate-600 max-w-2xl mx-auto">
         Explore research-informed guidance on learning strategy, instructional design, course development, LMS implementation, and more.
       </p>
+
+      <!-- Search Bar -->
+      <div class="max-w-xl mx-auto mt-8">
+        <input 
+          type="text" 
+          id="search-input"
+          placeholder="Search articles..."
+          class="w-full px-5 py-3 rounded-full border border-slate-200 shadow-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        />
+      </div>
     </section>
 
+    <!-- Category Filter -->
+    <div class="max-w-7xl mx-auto px-6 pt-8 flex gap-2 flex-wrap">
+      {categories.map(cat => (
+        <button 
+          class="category-btn px-4 py-2 rounded-full text-sm font-medium border border-slate-200 bg-white text-slate-600 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition"
+          data-category={cat}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
     <!-- Blog Grid -->
-    <section class="max-w-7xl mx-auto px-6 py-16">
+    <section class="max-w-7xl mx-auto px-6 py-10">
       <h2 class="text-3xl font-bold text-slate-800 mb-10">Latest Articles</h2>
       
-      {sortedPosts.length === 0 ? (
-        <p class="text-slate-500">No articles found.</p>
-      ) : (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedPosts.map((post) => {
-            const slug = post.data.slug || post.id.replace(/\.md$/, '');
-            const readTime = getReadTime(post.body);
-            return (
-              <a href={`/blog/${slug}/`} class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-                
-                {/* Featured Image */}
-                {post.data.heroImage ? (
-                  <img 
-                    src={post.data.heroImage} 
-                    alt={post.data.heroImageAlt || post.data.title || ''}
-                    class="w-full h-48 object-cover"
-                  />
-                ) : (
-                  <div class="w-full h-48 bg-slate-100 flex items-center justify-center">
-                    <span class="text-slate-400 text-sm">No Image</span>
-                  </div>
-                )}
+      <div id="no-results" class="hidden text-center py-12 text-slate-500">
+        No articles found matching your search.
+      </div>
 
-                <div class="p-6 flex flex-col flex-grow">
-                  <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
-                      {post.data.category || 'Article'}
-                    </span>
-                    <span class="text-xs text-slate-400">{readTime} min read</span>
-                  </div>
-                  <h3 class="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
-                    {post.data.title}
-                  </h3>
-                  <p class="text-slate-600 text-sm mb-4 line-clamp-3">
-                    {post.data.excerpt}
-                  </p>
-                  <div class="mt-auto text-xs text-slate-500 pt-4 border-t border-slate-100">
-                    {post.data.publishedAt && (
-                      <time>{new Date(post.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
-                    )}
-                  </div>
+      <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedPosts.map((post) => {
+          const slug = post.data.slug || post.id.replace(/\.md$/, '');
+          const readTime = getReadTime(post.body);
+          return (
+            <a 
+              href={`/blog/${slug}/`} 
+              class="blog-card bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col"
+              data-title={(post.data.title || '').toLowerCase()}
+              data-excerpt={(post.data.excerpt || '').toLowerCase()}
+              data-category={post.data.category || 'Article'}
+            >
+              {post.data.heroImage ? (
+                <img 
+                  src={post.data.heroImage} 
+                  alt={post.data.heroImageAlt || post.data.title || ''}
+                  class="w-full h-48 object-cover"
+                />
+              ) : (
+                <div class="w-full h-48 bg-slate-100 flex items-center justify-center">
+                  <span class="text-slate-400 text-sm">No Image</span>
                 </div>
-              </a>
-            );
-          })}
-        </div>
-      )}
+              )}
+
+              <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+                    {post.data.category || 'Article'}
+                  </span>
+                  <span class="text-xs text-slate-400">{readTime} min read</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
+                  {post.data.title}
+                </h3>
+                <p class="text-slate-600 text-sm mb-4 line-clamp-3">
+                  {post.data.excerpt}
+                </p>
+                <div class="mt-auto text-xs text-slate-500 pt-4 border-t border-slate-100">
+                  {post.data.publishedAt && (
+                    <time>{new Date(post.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+                  )}
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
     </section>
 
   </main>
+
+  <script>
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const cards = document.querySelectorAll('.blog-card');
+    const noResults = document.getElementById('no-results');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    let activeCategory = 'All';
+
+    function filterPosts() {
+      const query = searchInput?.value.toLowerCase() || '';
+      let visible = 0;
+
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title') || '';
+        const excerpt = card.getAttribute('data-excerpt') || '';
+        const category = card.getAttribute('data-category') || '';
+        
+        const matchesSearch = title.includes(query) || excerpt.includes(query);
+        const matchesCategory = activeCategory === 'All' || category === activeCategory;
+
+        if (matchesSearch && matchesCategory) {
+          (card as HTMLElement).style.display = '';
+          visible++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (noResults) {
+        noResults.classList.toggle('hidden', visible > 0);
+      }
+    }
+
+    searchInput?.addEventListener('input', filterPosts);
+
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.getAttribute('data-category') || 'All';
+        categoryBtns.forEach(b => b.classList.remove('bg-[var(--color-primary)]', 'text-white', 'border-[var(--color-primary)]'));
+        btn.classList.add('bg-[var(--color-primary)]', 'text-white', 'border-[var(--color-primary)]');
+        filterPosts();
+      });
+    });
+  </script>
+
 </Layout>
