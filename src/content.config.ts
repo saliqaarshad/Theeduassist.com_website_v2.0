@@ -10,7 +10,9 @@ const blog = defineCollection({
     author: z.string().optional(),
     category: z.string().optional(),
     tags: z.array(z.string()).optional(),
-    publishedAt: z.string().optional(),
+    publishedAt: z.union([z.string(), z.date()]).optional().transform(val => 
+      val instanceof Date ? val.toISOString() : val
+    ),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
     seoTitle: z.string().optional(),
@@ -30,5 +32,4 @@ const authors = defineCollection({
     profileImageAlt: z.string().optional(),
   })
 });
-
 export const collections = { blog, authors };
