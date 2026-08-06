@@ -6,6 +6,14 @@ const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => 
   new Date(b.data.publishedAt ?? 0).getTime() - new Date(a.data.publishedAt ?? 0).getTime()
 );
+
+// Read time calculator
+function getReadTime(body: string = '') {
+  const wordsPerMinute = 200;
+  const words = body.trim().split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return minutes < 1 ? 1 : minutes;
+}
 ---
 
 <Layout title="Blog | TheEduAssist" description="Practical guidance for building and improving learning experiences.">
@@ -32,12 +40,30 @@ const sortedPosts = posts.sort((a, b) =>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sortedPosts.map((post) => {
             const slug = post.data.slug || post.id.replace(/\.md$/, '');
+            const readTime = getReadTime(post.body);
             return (
               <a href={`/blog/${slug}/`} class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+                
+                {/* Featured Image */}
+                {post.data.heroImage ? (
+                  <img 
+                    src={post.data.heroImage} 
+                    alt={post.data.heroImageAlt || post.data.title || ''}
+                    class="w-full h-48 object-cover"
+                  />
+                ) : (
+                  <div class="w-full h-48 bg-slate-100 flex items-center justify-center">
+                    <span class="text-slate-400 text-sm">No Image</span>
+                  </div>
+                )}
+
                 <div class="p-6 flex flex-col flex-grow">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)] mb-3">
-                    {post.data.category || 'Article'}
-                  </span>
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
+                      {post.data.category || 'Article'}
+                    </span>
+                    <span class="text-xs text-slate-400">{readTime} min read</span>
+                  </div>
                   <h3 class="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
                     {post.data.title}
                   </h3>
